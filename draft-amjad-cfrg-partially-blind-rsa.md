@@ -3,6 +3,9 @@ title: "Partially Blind RSA Signatures"
 abbrev: "Partially Blind RSA Signatures"
 category: info
 
+ipr: trust200902
+keyword: Internet-Draft
+
 docname: draft-amjad-cfrg-partially-blind-rsa-latest
 submissiontype: IRTF
 
