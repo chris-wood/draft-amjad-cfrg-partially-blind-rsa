@@ -147,7 +147,54 @@ functions that are used in this protocol. The Prepare function is as specified i
 
 ## Key Generation {#key-generation}
 
-[[TODO: describe how to generate the strong RSA key pair]]
+The protocol in this document requires signing key pairs to be generated such that
+they satisfy a particular criteria. In particular, each RSA modulus for a key pair
+MUST be the product of two safe primes p and q. A safe prime p is a prime number
+such that p = 2q + 1, where q is also a prime number.
+
+A signing key pair is a tuple (skS, pkS), where each element is as follows:
+- skS = (p, q, phi, d), where phi = (p - 1)(q - 1)
+- pkS = (n, e), where n = p * q and d * e == 1 mod phi.
+
+The procedure for generating a key pair satisfying this requirement is below.
+
+~~~
+KeyGen(bits)
+
+Inputs:
+- bits, length in bits of the RSA modulus, a multiple of 2
+
+Outputs:
+- (skS, pkS), a signing key pair
+
+Steps:
+1. p = SafePrime(bits / 2)
+2. q = SafePrime(bits / 2)
+3. while p == q, go to step 2.
+4. phi = (p - 1) * (q - 1)
+5. e = 3
+6. d = inverse_mod(e, phi)
+7. skS = (p, q, phi, d)
+8. pkS = (p * q, e)
+9. output (skS, pkS)
+~~~
+
+The procedure for generating a safe prime, denoted SafePrime, is below.
+
+~~~
+SafePrime(bits)
+
+Inputs:
+- bits, length in bits of the safe prime
+
+Outputs:
+- p, a safe prime integer
+
+Steps:
+1. q = random_prime(bits)
+2. p = (2 * q) + 1
+3. if is_prime(p) is True, output p, else go to step 1.
+~~~
 
 ## Blind {#blind}
 
