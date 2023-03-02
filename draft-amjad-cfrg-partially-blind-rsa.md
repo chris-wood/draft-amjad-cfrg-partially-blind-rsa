@@ -155,6 +155,7 @@ MUST be the product of two safe primes p and q. A safe prime p is a prime number
 such that p = 2q + 1, where q is also a prime number.
 
 A signing key pair is a tuple (skS, pkS), where each element is as follows:
+
 - skS = (p, q, phi, d), where phi = (p - 1)(q - 1)
 - pkS = (n, e), where n = p * q and d * e == 1 mod phi.
 
