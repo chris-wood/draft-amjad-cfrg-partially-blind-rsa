@@ -5,6 +5,8 @@ category: info
 
 ipr: trust200902
 keyword: Internet-Draft
+stand_alone: yes
+pi: [toc, sortrefs, symrefs]
 
 docname: draft-amjad-cfrg-partially-blind-rsa-latest
 submissiontype: IRTF
