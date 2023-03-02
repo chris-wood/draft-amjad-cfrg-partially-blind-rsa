@@ -396,8 +396,8 @@ Steps:
 3. lambda_len = kLen / 2
 3. hkdf_len = lambda_len + 16
 4. expanded_bytes = HKDF(IKM=hkdf_salt, info=hkdf_info, L=hkdf_len)
-5. expanded_bytes[0] |= 0x01 // Set bottom-most bit
-6. expanded_bytes[lambda_len-1] &= 0x3F // Clear two-most top bits
+5. expanded_bytes[0] &= 0x3F // Clear two-most top bits
+6. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
 7. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
 8. output pkM = (n, e')
 ~~~
