@@ -394,12 +394,12 @@ Steps:
 1. hkdf_salt = concat(info, 0x00)
 2. hkdf_info = int_to_bytes(n, kLen)
 3. lambda_len = kLen / 2
-3. hkdf_len = lambda_len + 16
-4. expanded_bytes = HKDF(IKM=hkdf_salt, info=hkdf_info, L=hkdf_len)
-5. expanded_bytes[0] &= 0x3F // Clear two-most top bits
-6. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
-7. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
-8. output pkM = (n, e')
+4. hkdf_len = lambda_len + 16
+5. expanded_bytes = HKDF(IKM=hkdf_salt, info=hkdf_info, L=hkdf_len)
+6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
+7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
+8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
+9. output pkM = (n, e * e')
 ~~~
 
 ## Private Key Augmentation {#augment-private-key}
@@ -465,7 +465,24 @@ OID {{!RFC5756}}. It MUST NOT use the rsaEncryption OID {{?RFC5280}}.
 
 # RSAPBSSA Variants {#rsapbssa}
 
-[[TODO: writeme]]
+In this section, we define another name variant of RSAPBSSA that modifies the AugmentPublicKey
+function as defined in {{#augment-public-key}}. In particular, we can modify AugmentPublicKey
+to control the length of the generated public key augmentation.
+
+1. RSAPBSSA-HALFMODULUSLENGTH: This named variant is the one that is specified in {{#augment-public-key}}
+where the augmentation e' is guaranteed to be at most kLen / 2 - 2 bits long.
+2. RSAPBSSA-FULLMODULUSLENGTH: This named variant modifies the algorithm specified in {{#augment-public-key}}
+by extending the augmentation e' to be length kLen instead. In particular, we set hkdf_len = kLen + 16 as
+opposed to hkdf_len = (kLen / 2) + 16.
+
+The RECOMMENDED variant is RSAPBSSA-HALFMODULUSLENGTH.
+
+The two named variants have differences in correctness guarantees.
+RSAPBSSA-HALFMODULUSLENGTH guarantees that the AugmentPrivateKey function in {{#augment-private-key}}
+will never fail the augmented public key will always be invertible modulo phi.
+RSAPBSSA-FULLMODULUSLENGTH may generate public keys where AugmentPrivateKey in {{#augment-private-key}}
+will fail as there is no inverse of the public key modulo phi. Furthermore, only the server holding
+the private key can detect this failure.
 
 # Security Considerations
 
