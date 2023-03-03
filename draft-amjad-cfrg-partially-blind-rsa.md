@@ -466,21 +466,21 @@ OID {{!RFC5756}}. It MUST NOT use the rsaEncryption OID {{?RFC5280}}.
 # RSAPBSSA Variants {#rsapbssa}
 
 In this section, we define another name variant of RSAPBSSA that modifies the AugmentPublicKey
-function as defined in {{#augment-public-key}}. In particular, we can modify AugmentPublicKey
+function as defined in {{augment-public-key}}. In particular, we can modify AugmentPublicKey
 to control the length of the generated public key augmentation.
 
-1. RSAPBSSA-HALFMODULUSLENGTH: This named variant is the one that is specified in {{#augment-public-key}}
+1. RSAPBSSA-HALFMODULUSLENGTH: This named variant is the one that is specified in {{augment-public-key}}
 where the augmentation e' is guaranteed to be at most kLen / 2 - 2 bits long.
-2. RSAPBSSA-FULLMODULUSLENGTH: This named variant modifies the algorithm specified in {{#augment-public-key}}
+2. RSAPBSSA-FULLMODULUSLENGTH: This named variant modifies the algorithm specified in {{augment-public-key}}
 by extending the augmentation e' to be length kLen instead. In particular, we set hkdf_len = kLen + 16 as
 opposed to hkdf_len = (kLen / 2) + 16.
 
 The RECOMMENDED variant is RSAPBSSA-HALFMODULUSLENGTH.
 
 The two named variants have differences in correctness guarantees.
-RSAPBSSA-HALFMODULUSLENGTH guarantees that the AugmentPrivateKey function in {{#augment-private-key}}
+RSAPBSSA-HALFMODULUSLENGTH guarantees that the AugmentPrivateKey function in {{augment-private-key}}
 will never fail the augmented public key will always be invertible modulo phi.
-RSAPBSSA-FULLMODULUSLENGTH may generate public keys where AugmentPrivateKey in {{#augment-private-key}}
+RSAPBSSA-FULLMODULUSLENGTH may generate public keys where AugmentPrivateKey in {{augment-private-key}}
 will fail as there is no inverse of the public key modulo phi. Furthermore, only the server holding
 the private key can detect this failure.
 
