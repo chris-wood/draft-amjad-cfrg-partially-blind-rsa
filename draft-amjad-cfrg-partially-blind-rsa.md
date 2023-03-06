@@ -465,24 +465,22 @@ OID {{!RFC5756}}. It MUST NOT use the rsaEncryption OID {{?RFC5280}}.
 
 # RSAPBSSA Variants {#rsapbssa}
 
-In this section, we define another name variant of RSAPBSSA that modifies the AugmentPublicKey
-function as defined in {{augment-public-key}}. In particular, we can modify AugmentPublicKey
-to control the length of the generated public key augmentation.
+In this section, we define named variants of RSAPBSSA. These variants consider
+different sets of RSASSA-PSS parameters as defined in {{Section 9.1.1 of ?RFC8017}} and explicitly
+specified in {{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}. For algorithms unique
+to RSAPBSSA, the choice of hash function specifies the instantation of HKDF in AugmentPublicKey in
+{{augment-public-key}}.
 
-1. RSAPBSSA-HALFMODULUSLENGTH: This named variant is the one that is specified in {{augment-public-key}}
-where the augmentation e' is guaranteed to be at most `kLen / 2 - 2 bits` long.
-2. RSAPBSSA-FULLMODULUSLENGTH: This named variant modifies the algorithm specified in {{augment-public-key}}
-by extending the augmentation e' to be length kLen instead. In particular, we set `hkdf_len = kLen + 16` as
-opposed to hkdf_len = `(kLen / 2) + 16`.
+1. RSAPBSSA-SHA384-PSS-Randomized: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, a 48-byte salt length, and uses the randomized preparation function (PrepareRandomize).
+2. RSAPBSSA-SHA384-PSSZERO-Randomized: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and uses the randomized preparation function (PrepareRandomize).
+3. RSAPBSSA-SHA384-PSS-Deterministic: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, 48-byte salt length, and uses the identity preparation function (PrepareIdentity).
+4. RSAPBSSA-SHA384-PSSZERO-Deterministic: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and uses the identity preparation function (PrepareIdentity). This is the only variant that produces deterministic signatures over the client's input message msg.
 
-The RECOMMENDED variant is RSAPBSSA-HALFMODULUSLENGTH.
+The RECOMMENDED variants are RSAPBSSA-SHA384-PSS-Randomized or
+RSAPBSSA-SHA384-PSSZERO-Randomized.
 
-The two named variants have differences in correctness guarantees.
-RSAPBSSA-HALFMODULUSLENGTH guarantees that the AugmentPrivateKey function in {{augment-private-key}}
-will never fail the augmented public key will always be invertible modulo phi.
-RSAPBSSA-FULLMODULUSLENGTH may generate public keys where AugmentPrivateKey in {{augment-private-key}}
-will fail as there is no inverse of the public key modulo phi. Furthermore, only the server holding
-the private key can detect this failure.
+For discussion about interoperability and deterministic signatures, we refer readers to
+{{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}.
 
 # Security Considerations
 
