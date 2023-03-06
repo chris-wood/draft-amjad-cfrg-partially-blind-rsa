@@ -470,10 +470,10 @@ function as defined in {{augment-public-key}}. In particular, we can modify Augm
 to control the length of the generated public key augmentation.
 
 1. RSAPBSSA-HALFMODULUSLENGTH: This named variant is the one that is specified in {{augment-public-key}}
-where the augmentation e' is guaranteed to be at most kLen / 2 - 2 bits long.
+where the augmentation e' is guaranteed to be at most `kLen / 2 - 2 bits` long.
 2. RSAPBSSA-FULLMODULUSLENGTH: This named variant modifies the algorithm specified in {{augment-public-key}}
-by extending the augmentation e' to be length kLen instead. In particular, we set hkdf_len = kLen + 16 as
-opposed to hkdf_len = (kLen / 2) + 16.
+by extending the augmentation e' to be length kLen instead. In particular, we set `hkdf_len = kLen + 16` as
+opposed to hkdf_len = `(kLen / 2) + 16`.
 
 The RECOMMENDED variant is RSAPBSSA-HALFMODULUSLENGTH.
 
@@ -486,7 +486,58 @@ the private key can detect this failure.
 
 # Security Considerations
 
-[[TODO: writeme]]
+Amjad et al. [[TODO: cite eprint when ready]] proved the following properties of RSAPBSSA:
+
+- One-more-unforgeability: For any adversary interacting with the server (i.e., the signer) as a client
+that interacts with the server at most `n` times is unable to output `n+1` valid message and signature
+tuples (i.e., the signature verifies for the corresponding message). This holds for any `n` that is polynomial
+in the security parameter of the scheme.
+- Concurrent one-more-unforgeability: The above holds even in the setting when an adversarial client is interacting
+with multiple servers (signers) simultaneously.
+- Unlinkability: Consider any adversary acting as the server (signer) interacting with `n` clients using the same
+public metadata. Afterwards, the adversary randomly receives one of the `n` resulting signatures as a challenge.
+Then, the adversary cannot guess which of the `n` interactions created the challenge signature better than
+a random guess.
+
+The first two unforgeability properties rely on the Strong RSA Known Target Inversion Problem. This is
+slightly stronger assumption that the RSA Known Target Inversion Problem used in RSABSSA. In the RSA Known
+Target Inversion Problem, the challenger is given a fixed public exponent `e` with the goal of computing
+the e-th root of `n+1` random elements while using an e-th oracle at most `n` times. In comparison, the
+Strong RSA Known Target Inversion Problem enables the challenger to choose any public exponents
+`e_1,...,e_n+1 > 1` such that it can be the `e_i`-th for the `i`-th random element. One can view the
+difference between the Strong RSA Known Target Inversion and RSA Known Target Inversion problems identical
+to the differences between the Strong RSA and RSA problems.
+
+The final property of unlinkability relies only on the fact that the underlying hash functions are modelled
+as random oracles.
+
+All the security considerations of RSABSSA in {{Section 8 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}
+also apply to RSAPBSSA here. We present additional security considerations specific to RSAPBSSA below.
+
+## Strong RSA Modulus Key Generation
+
+An essential component of RSAPBSSA is that the KeyGen algorithm in {{key-generation}} generates a RSA
+modulus that is the product of two strong primes. This is essential to ensure that the resulting outputs
+of AugmentPublicKey in {{augment-public-key}} does cause errors in AugmentPrivateKey in {{augment-private-key}}.
+We note that an error in AugmentPrivateKey would incur if the output of AugmentPublicKey does not have an
+inverse modulo phi. By choosing the RSA modulus as the product of two strong primes, we guarantee the output of
+AugmentPublicKey will never incur errors in AugmentPrivateKey.
+
+It is integral that one uses the KeyGen algorithm for RSAPBSSA instead of the standard RSA key generation algorithms
+(such as those used in {{RSABSSA}}). If one uses standard RSA key generation, there are no guarantees provided
+for the success of the AugmentPrivateKey function and, thus, being able to correctly sign messages for certain choices
+of public metadata.
+
+## Domain Separation for Public Key Augmentation
+
+The purpose of domain separation is to guarantee that the security analysis of any cryptographic protocol remain true
+even if multiple instances of the protocol or multiple hash functions in a single instance of the protocol
+are instantiated based on one underlying hash function.
+
+The AugmentPublicKey in {{augment-public-key}} of this document already provide domain separation by using the RSA modulus
+as input to the underlying HKDF as the info argument. As each instance of RSAPBSSA will have a different RSA modulus, this
+effectively ensures that the outputs of the underlying hash functions for multiple instances will be different
+even for the same input.
 
 # IANA Considerations
 
