@@ -119,7 +119,7 @@ sig = Finalize(pkS, input_msg, info, blind_sig, inv)
 ~~~
 
 The output of the protocol is `input_msg` and `sig`. Upon completion, correctness requires that
-clients can verify signature `sig` over the prepared message `input_msg` and metadata `info`
+clients can verify signature `sig` over the prepared message `input_msg` and metadata `metadata`
 using the server public key `pkS` by invoking the RSASSA-PSS-VERIFY routine defined in
 {{Section 8.1.2 of !RFC8017}}. The Finalize function performs this check before returning the signature.
 See {{verification}} for more details about verifying signatures produced through this protocol.
@@ -127,20 +127,20 @@ See {{verification}} for more details about verifying signatures produced throug
 In pictures, the protocol runs as follows:
 
 ~~~
-   Client(pkS, msg, info)          Server(skS, pkS, info)
+   Client(pkS, msg, metadata)          Server(skS, pkS, metadata)
   -------------------------------------------------------
   input_msg = Prepare(msg)
-  blinded_msg, inv = Blind(pkS, input_msg, info)
+  blinded_msg, inv = Blind(pkS, input_msg, metadata)
 
                         blinded_msg
                         ---------->
 
-            blind_sig = BlindSign(skS, blinded_msg, info)
+            blind_sig = BlindSign(skS, blinded_msg, metadata)
 
                          blind_sig
                         <----------
 
-  sig = Finalize(pkS, input_msg, info, blind_sig, inv)
+  sig = Finalize(pkS, input_msg, metadata, blind_sig, inv)
 ~~~
 
 In the remainder of this section, we specify the Blind, BlindSign, and Finalize
@@ -219,7 +219,7 @@ for invalid inputs. However, this error cannot occur based on how RSAVP1 is invo
 so this error is not included in the list of errors for Blind.
 
 ~~~
-Blind(pkS, msg, info)
+Blind(pkS, msg, metadata)
 
 Parameters:
 - kLen, the length in bytes of the RSA modulus n
@@ -230,7 +230,7 @@ Parameters:
 Inputs:
 - pkS, server public key (n, e)
 - msg, message to be signed, a byte string
-- info, public metadata, a byte string
+- metadata, public metadata, a byte string
 
 Outputs:
 - blinded_msg, a byte string of length kLen
@@ -243,7 +243,7 @@ Errors:
 - "invalid input": Raised when the message is not co-prime with n.
 
 Steps:
-1. msg_prime = concat(msg, metadata)
+1. msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)
 2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n))
    with Hash, MGF, and sLen as defined in the parameters
 3. If EMSA-PSS-ENCODE raises an error, raise the error and stop
@@ -255,7 +255,7 @@ Steps:
 8. inv = inverse_mod(r, n)
 9. If inverse_mod fails, raise an "blinding error" error
    and stop
-10. pkM = AugmentPublicKey(pkS, info)
+10. pkM = AugmentPublicKey(pkS, metadata)
 11. x = RSAVP1(pkM, r)
 12. z = m * x mod n
 13. blinded_msg = int_to_bytes(z, kLen)
@@ -273,7 +273,7 @@ blinded message input and returns the output encoded as a byte string.
 RSASP1 is as defined in {{Section 5.2.1 of !RFC8017}}.
 
 ~~~
-BlindSign(skS, blinded_msg, info)
+BlindSign(skS, blinded_msg, metadata)
 
 Parameters:
 - kLen, the length in bytes of the RSA modulus n
@@ -282,7 +282,7 @@ Inputs:
 - skS, server private key
 - blinded_msg, encoded and blinded message to be signed, a
   byte string
-- info, public metadata, a byte string
+- metadata, public metadata, a byte string
 
 Outputs:
 - blind_sig, a byte string of length kLen
@@ -294,8 +294,8 @@ Errors:
 
 Steps:
 1. m = bytes_to_int(blinded_msg)
-2. skM = AugmentPrivateKey(skS, pkS, info)
-3. pkM = AugmentPublicKey(pkS, info)
+2. skM = AugmentPrivateKey(skS, pkS, metadata)
+3. pkM = AugmentPublicKey(pkS, metadata)
 4. s = RSASP1(skM, m)
 5. m' = RSAVP1(pkM, s)
 6. If m != m', raise "signing failure" and stop
@@ -311,7 +311,7 @@ upon success. Note that this function will internally hash the input message
 as is done in Blind.
 
 ~~~
-Finalize(pkS, msg, info, blind_sig, inv)
+Finalize(pkS, msg, metadata, blind_sig, inv)
 
 Parameters:
 - kLen, the length in bytes of the RSA modulus n
@@ -322,7 +322,7 @@ Parameters:
 Inputs:
 - pkS, server public key (n, e)
 - msg, message to be signed, a byte string
-- info, public metadata, a byte string
+- metadata, public metadata, a byte string
 - blind_sig, signed and blinded element, a byte string of
   length kLen
 - inv, inverse of the blind, an integer
@@ -340,8 +340,8 @@ Steps:
 2. z = bytes_to_int(blind_sig)
 3. s = z * inv mod n
 4. sig = int_to_bytes(s, kLen)
-5. msg_prime = concat(msg, info)
-6. pkM = AugmentPublicKey(pkS, info)
+5. msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)
+6. pkM = AugmentPublicKey(pkS, metadata)
 7. result = RSASSA-PSS-VERIFY(pkM, msg_prime, sig) with
    Hash, MGF, and sLen as defined in the parameters
 8. If result = "valid signature", output sig, else
@@ -355,12 +355,12 @@ Note that `pkM` can be computed once during `Blind` and then passed to
 
 As described in {{core-protocol}}, the output of the protocol is the prepared
 message `input_msg` and the signature `sig`. The message that applications
-consume is `msg`, from which `input_msg` is derived, along with metadata `info`.
+consume is `msg`, from which `input_msg` is derived, along with metadata `metadata`.
 Clients verify the signature over `msg` and `info` using the server's public
 key `pkS` as follows:
 
 1. Compute `pkM = AugmentPublicKey(pkS, info)`.
-2. Compute `msg_prime = concat(input_msg, info)`.
+2. Compute `msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)`.
 3. Invoke and output the result of RSASSA-PSS-VERIFY ({{Section 8.1.2 of !RFC8017}})
    with `(n, e)` as `pkM`, M as `msg_prime`, and `S` as `sig`.
 
@@ -374,10 +374,12 @@ with the random prefix removed.
 ## Public Key Augmentation {#augment-public-key}
 
 The public key augmentation function (AugmentPublicKey) derives a per-metadata public
-key that is used in the core protocol.
+key that is used in the core protocol. The hash function used for HKDF is that which
+is associated with the RSAPBSSA instance and denoted by the `Hash` parameter. Note that
+the input to HKDF is expanded to account for bias in the output distribution.
 
 ~~~
-AugmentPublicKey(pkS, info)
+AugmentPublicKey(pkS, metadata)
 
 Parameters:
 - kLen, the length in bytes of the RSA modulus n
@@ -385,17 +387,17 @@ Parameters:
 
 Inputs:
 - pkS, server public key (n, e)
-- info, public metadata, a byte string
+- metadata, public metadata, a byte string
 
 Outputs:
 - pkM, augmented server public key (n, e')
 
 Steps:
-1. hkdf_salt = concat(info, 0x00)
-2. hkdf_info = int_to_bytes(n, kLen)
+1. hkdf_input = concat(metadata, 0x00)
+2. hkdf_salt = int_to_bytes(n, kLen)
 3. lambda_len = kLen / 2
 4. hkdf_len = lambda_len + 16
-5. expanded_bytes = HKDF(IKM=hkdf_salt, info=hkdf_info, L=hkdf_len)
+5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_salt, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
 8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
@@ -408,7 +410,7 @@ The public key augmentation function (AugmentPrivateKey) derives a per-metadata 
 signing key that is used by the server in the core protocol.
 
 ~~~
-AugmentPrivateKey(skS, pkS, info)
+AugmentPrivateKey(skS, pkS, metadata)
 
 Parameters:
 - kLen, the length in bytes of the RSA modulus n
@@ -417,13 +419,13 @@ Parameters:
 Inputs:
 - skS, server private key (p, q, phi, d)
 - pkS, server public key (n, e)
-- info, public metadata, a byte string
+- metadata, public metadata, a byte string
 
 Outputs:
 - skM, augmented server private key (p, q, phi, d')
 
 Steps:
-1. (n, e') = AugmentPublicKey(pkS, info)
+1. (n, e') = AugmentPublicKey(pkS, metadata)
 2. d' = inverse_mod(e', phi)
 3. output pkM = (p, q, phi, d')
 ~~~
