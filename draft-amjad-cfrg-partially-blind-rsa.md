@@ -471,18 +471,28 @@ In this section, we define named variants of RSAPBSSA. These variants consider
 different sets of RSASSA-PSS parameters as defined in {{Section 9.1.1 of ?RFC8017}} and explicitly
 specified in {{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}. For algorithms unique
 to RSAPBSSA, the choice of hash function specifies the instantation of HKDF in AugmentPublicKey in
-{{augment-public-key}}.
+{{augment-public-key}}. The different types of Prepare functions are specified in
+{{Section 4.1 of RSABSSA}}.
 
-1. RSAPBSSA-SHA384-PSS-Randomized: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, a 48-byte salt length, and uses the randomized preparation function (PrepareRandomize).
-2. RSAPBSSA-SHA384-PSSZERO-Randomized: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and uses the randomized preparation function (PrepareRandomize).
-3. RSAPBSSA-SHA384-PSS-Deterministic: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, 48-byte salt length, and uses the identity preparation function (PrepareIdentity).
-4. RSAPBSSA-SHA384-PSSZERO-Deterministic: This named variant uses SHA-384 as the hash function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and uses the identity preparation function (PrepareIdentity). This is the only variant that produces deterministic signatures over the client's input message msg.
+1. RSAPBSSA-SHA384-PSS-Randomized: This named variant uses SHA-384 as the hash function,
+MGF1 with SHA-384 as the PSS mask generation function, a 48-byte salt length, and uses
+the randomized preparation function (PrepareRandomize).
+2. RSAPBSSA-SHA384-PSSZERO-Randomized: This named variant uses SHA-384 as the hash
+function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and
+uses the randomized preparation function (PrepareRandomize).
+3. RSAPBSSA-SHA384-PSS-Deterministic: This named variant uses SHA-384 as the hash function,
+MGF1 with SHA-384 as the PSS mask generation function, 48-byte salt length, and uses the
+identity preparation function (PrepareIdentity).
+4. RSAPBSSA-SHA384-PSSZERO-Deterministic: This named variant uses SHA-384 as the hash
+function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and
+uses the identity preparation function (PrepareIdentity). This is the only variant that
+produces deterministic signatures over the client's input message msg.
 
 The RECOMMENDED variants are RSAPBSSA-SHA384-PSS-Randomized or
 RSAPBSSA-SHA384-PSSZERO-Randomized.
 
-For discussion about interoperability and deterministic signatures, we refer readers to
-{{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}.
+See {{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}} for discussion about
+interoperability considerations and deterministic signatures.
 
 # Security Considerations
 
