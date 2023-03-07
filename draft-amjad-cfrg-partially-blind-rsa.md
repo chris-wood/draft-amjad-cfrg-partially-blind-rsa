@@ -514,7 +514,7 @@ slightly stronger assumption that the RSA Known Target Inversion Problem used in
 Target Inversion Problem, the challenger is given a fixed public exponent `e` with the goal of computing
 the e-th root of `n+1` random elements while using an e-th oracle at most `n` times. In comparison, the
 Strong RSA Known Target Inversion Problem enables the challenger to choose any public exponents
-`e_1,...,e_n+1 > 1` such that it can be the `e_i`-th for the `i`-th random element. One can view the
+`e_1,...,e_n+1 > 1` such that it can be the `e_i`-th root for the `i`-th random element. One can view the
 difference between the Strong RSA Known Target Inversion and RSA Known Target Inversion problems identical
 to the differences between the Strong RSA and RSA problems.
 
