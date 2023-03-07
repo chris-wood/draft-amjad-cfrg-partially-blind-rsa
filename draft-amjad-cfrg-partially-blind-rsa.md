@@ -394,10 +394,10 @@ Outputs:
 
 Steps:
 1. hkdf_input = concat(metadata, 0x00)
-2. hkdf_info = int_to_bytes(n, kLen)
+2. hkdf_salt = int_to_bytes(n, kLen)
 3. lambda_len = kLen / 2
 4. hkdf_len = lambda_len + 16
-5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_info, info="PBRSA", L=hkdf_len)
+5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_salt, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
 8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
