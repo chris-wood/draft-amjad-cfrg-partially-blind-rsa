@@ -243,7 +243,7 @@ Errors:
 - "invalid input": Raised when the message is not co-prime with n.
 
 Steps:
-1. msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)
+1. msg_prime = concat("msg", int_to_bytes(len(metadata), 4), metadata, msg)
 2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n))
    with Hash, MGF, and sLen as defined in the parameters
 3. If EMSA-PSS-ENCODE raises an error, raise the error and stop
@@ -340,7 +340,7 @@ Steps:
 2. z = bytes_to_int(blind_sig)
 3. s = z * inv mod n
 4. sig = int_to_bytes(s, kLen)
-5. msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)
+5. msg_prime = concat("msg", int_to_bytes(len(metadata), 4), metadata, msg)
 6. pkM = AugmentPublicKey(pkS, metadata)
 7. result = RSASSA-PSS-VERIFY(pkM, msg_prime, sig) with
    Hash, MGF, and sLen as defined in the parameters
@@ -360,7 +360,7 @@ Clients verify the signature over `msg` and `info` using the server's public
 key `pkS` as follows:
 
 1. Compute `pkM = AugmentPublicKey(pkS, info)`.
-2. Compute `msg_prime = concat(int_to_bytes(len(metadata), 4), metadata, msg)`.
+2. Compute `msg_prime = concat("msg", int_to_bytes(len(metadata), 4), metadata, msg)`.
 3. Invoke and output the result of RSASSA-PSS-VERIFY ({{Section 8.1.2 of !RFC8017}})
    with `(n, e)` as `pkM`, M as `msg_prime`, and `S` as `sig`.
 
@@ -393,7 +393,7 @@ Outputs:
 - pkM, augmented server public key (n, e')
 
 Steps:
-1. hkdf_input = concat(metadata, 0x00)
+1. hkdf_input = concat("key", metadata, 0x00)
 2. hkdf_salt = int_to_bytes(n, kLen)
 3. lambda_len = kLen / 2
 4. hkdf_len = lambda_len + 16
@@ -538,6 +538,10 @@ The AugmentPublicKey in {{augment-public-key}} of this document already provide 
 as input to the underlying HKDF as the info argument. As each instance of RSAPBSSA will have a different RSA modulus, this
 effectively ensures that the outputs of the underlying hash functions for multiple instances will be different
 even for the same input.
+
+Additionally, the hash function invocation used for computing the message digest is domain separated from the hash function
+invocation used for augmenting the public key in AugmentPublicKey. This domain separation is done by prepending the inputs
+to each hash function with a unique domain separation tag.
 
 # IANA Considerations
 
