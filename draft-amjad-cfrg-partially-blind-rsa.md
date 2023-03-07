@@ -553,6 +553,18 @@ Additionally, the hash function invocation used for computing the message digest
 invocation used for augmenting the public key in AugmentPublicKey. This domain separation is done by prepending the inputs
 to each hash function with a unique domain separation tag.
 
+## Choosing Public Metadata
+
+The unlinkability property of RSAPBSSA guarantees anonymity for any signature amongst the set of all interactions with the
+server (signer) with the same choice of public metadata. In other words, the server is unable to identify the interaction
+that created the signature. The unlinkability guaratee of RSAPBSSA is only useful when there are a significant number of
+server (signer) interactions for any value of public metadata. In the extreme case where each server interaction is performed
+with a different value of public metadata, then the server can uniquely identify the server interaction that created the
+given signature.
+
+Applications that use RSAPBSSA MUST guarantee that the choice of public metadata is limited such that there is a significant
+number of server (signer) interactions for any potential value of public metadata.
+
 # IANA Considerations
 
 This document has no IANA actions.
