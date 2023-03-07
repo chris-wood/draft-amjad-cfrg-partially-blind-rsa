@@ -175,7 +175,7 @@ Steps:
 2. q = SafePrime(bits / 2)
 3. while p == q, go to step 2.
 4. phi = (p - 1) * (q - 1)
-5. e = 3
+5. e = 65537
 6. d = inverse_mod(e, phi)
 7. skS = (p, q, phi, d)
 8. pkS = (p * q, e)
