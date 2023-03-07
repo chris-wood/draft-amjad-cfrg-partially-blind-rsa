@@ -175,7 +175,7 @@ Steps:
 2. q = SafePrime(bits / 2)
 3. while p == q, go to step 2.
 4. phi = (p - 1) * (q - 1)
-5. e = 3
+5. e = 65537
 6. d = inverse_mod(e, phi)
 7. skS = (p, q, phi, d)
 8. pkS = (p * q, e)
@@ -194,7 +194,7 @@ Outputs:
 - p, a safe prime integer
 
 Steps:
-1. q = random_prime(bits)
+1. q = random_prime(bits - 1)
 2. p = (2 * q) + 1
 3. if is_prime(p) is True, output p, else go to step 1.
 ~~~
