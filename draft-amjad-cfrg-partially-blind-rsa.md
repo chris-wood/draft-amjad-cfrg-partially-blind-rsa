@@ -374,7 +374,9 @@ with the random prefix removed.
 ## Public Key Augmentation {#augment-public-key}
 
 The public key augmentation function (AugmentPublicKey) derives a per-metadata public
-key that is used in the core protocol.
+key that is used in the core protocol. The hash function used for HKDF is that which
+is associated with the RSAPBSSA instance and denoted by the `Hash` parameter. Note that
+the input to HKDF is expanded to account for bias in the output distribution.
 
 ~~~
 AugmentPublicKey(pkS, info)
@@ -391,11 +393,11 @@ Outputs:
 - pkM, augmented server public key (n, e')
 
 Steps:
-1. hkdf_salt = concat(info, 0x00)
+1. hkdf_input = concat(info, 0x00)
 2. hkdf_info = int_to_bytes(n, kLen)
 3. lambda_len = kLen / 2
 4. hkdf_len = lambda_len + 16
-5. expanded_bytes = HKDF(IKM=hkdf_salt, info=hkdf_info, L=hkdf_len)
+5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_info, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
 8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
