@@ -194,7 +194,7 @@ Outputs:
 - p, a safe prime integer
 
 Steps:
-1. q = random_prime(bits)
+1. q = random_prime(bits - 1)
 2. p = (2 * q) + 1
 3. if is_prime(p) is True, output p, else go to step 1.
 ~~~
