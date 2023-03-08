@@ -21,7 +21,7 @@ author:
     organization: Cloudflare
     email: "caw@heapingbits.net"
  -  ins: K. W. L. Yeo
-    name: Kevin Yeo
+    name: Kevin W. L. Yeo
     organization: Google
     email: "kwlyeo@cs.columbia.edu"
 
