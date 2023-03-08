@@ -565,6 +565,21 @@ given signature.
 Applications that use RSAPBSSA MUST guarantee that the choice of public metadata is limited such that there is a significant
 number of server (signer) interactions for any potential value of public metadata.
 
+## Denial of Service 
+
+RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
+AugmentPublicKey in {{augment-public-key}}. In particular, an attacker may try to pick public metadata such that
+the output of AugmentPublicKey is very large. As a result, the computational cost of blind signing and verification will
+increase leading to suspectibility to DoS attacks.
+
+For applications where the values of potential public metadata choices are fixed ahead of time, it is possible
+to try and mitigate DoS attacks. There are only two requirements for the choice of `e'` in AugmentPublicKey in
+{{augment-public-key}}. First, `e'` must be smaller than both prime factors of phi. Secondly, the possible values
+of `e'` must be large enough to avoid collisions such that two public metadata choices will result in the same `e'`
+and, thus, the same augmented public key. During KeyGen in {{key-generation}}, the server (signer) can pick the
+smallest length output for the HKDF in AugmentPublicKey such that the output will be different for all relevant
+public metadata choices while ensuring augmented public keys are smaller.
+
 # IANA Considerations
 
 This document has no IANA actions.
