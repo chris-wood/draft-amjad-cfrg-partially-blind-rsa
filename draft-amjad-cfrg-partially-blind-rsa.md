@@ -568,7 +568,7 @@ number of server (signer) interactions for any potential value of public metadat
 ## Denial of Service
 
 RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
-AugmentPublicKey in {{augment-public-key}}. In particular, an attacker may try to pick public metadata such that
+AugmentPublicKey in {{augment-public-key}}. In particular, an attacker can pick public metadata such that
 the output of AugmentPublicKey is very large. As a result, the computational cost of blind signing and verification will
 increase leading to suspectibility to DoS attacks.
 
