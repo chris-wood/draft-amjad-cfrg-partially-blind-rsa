@@ -565,7 +565,7 @@ given signature.
 Applications that use RSAPBSSA MUST guarantee that the choice of public metadata is limited such that there is a significant
 number of server (signer) interactions for any potential value of public metadata.
 
-## Denial of Service 
+## Denial of Service
 
 RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
 AugmentPublicKey in {{augment-public-key}}. In particular, an attacker may try to pick public metadata such that
