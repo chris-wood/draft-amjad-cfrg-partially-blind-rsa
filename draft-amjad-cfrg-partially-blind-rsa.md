@@ -20,7 +20,7 @@ author:
     name: Christopher A. Wood
     organization: Cloudflare
     email: "caw@heapingbits.net"
- -  ins: K. Yeo
+ -  ins: K. W. L. Yeo
     name: Kevin Yeo
     organization: Google
     email: "kwlyeo@cs.columbia.edu"
