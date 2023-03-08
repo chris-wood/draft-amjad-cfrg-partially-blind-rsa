@@ -573,7 +573,10 @@ the output of AugmentPublicKey is very large. As a result, the computational cos
 increase leading to suspectibility to DoS attacks.
 
 For applications where the values of potential public metadata choices are fixed ahead of time, it is possible
-to try and mitigate DoS attacks. There are only two requirements for the choice of `e'` in AugmentPublicKey in
+to try and mitigate DoS attacks. If the set of possible metadata choices is small, then applications
+SHOULD use one of the protocol variants in {{RSABSSA}} with distinct keys for each metadata value.
+However, if the set of possible metadata choices is large, rendering this approach infeasible for key
+management and distribution reasons, other mitigations are possible. As one possible mitigation, first recall that there are only two requirements for the choice of `e'` in AugmentPublicKey in
 {{augment-public-key}}. First, `e'` must be smaller than both prime factors of phi. Secondly, the possible values
 of `e'` must be large enough to avoid collisions such that two public metadata choices will result in the same `e'`
 and, thus, the same augmented public key. During KeyGen in {{key-generation}}, the server (signer) can pick the
