@@ -12,10 +12,18 @@ docname: draft-amjad-cfrg-partially-blind-rsa-latest
 submissiontype: IRTF
 
 author:
- -
-    fullname: Your Name Here
-    organization: Your Organization Here
+ -  ins: G. A. Amjad
+    name: Ghous A. Amjad
+    organization: Google
+    email: "ghous_amjad@alumni.brown.edu"
+ -  ins: C. A. Wood
+    name: Christopher A. Wood
+    organization: Cloudflare
     email: "caw@heapingbits.net"
+ -  ins: K. W. L. Yeo
+    name: Kevin W. L. Yeo
+    organization: Google
+    email: "kwlyeo@cs.columbia.edu"
 
 normative:
 
