@@ -444,8 +444,6 @@ Steps:
 
 # Implementation and Usage Considerations
 
-[[NOTE: we may just want to reference the RSABSSA section for this information]]
-
 This section documents considerations for interfaces to implementations of the protocol
 in this document. This includes error handling and API considerations.
 
@@ -508,7 +506,7 @@ interoperability considerations and deterministic signatures.
 
 # Security Considerations
 
-Amjad et al. [[TODO: cite eprint when ready]] proved the following properties of RSAPBSSA:
+Amjad et al. proved the following properties of RSAPBSSA:
 
 - One-more-unforgeability: For any adversary interacting with the server (i.e., the signer) as a client
 that interacts with the server at most `n` times is unable to output `n+1` valid message and signature
@@ -602,8 +600,6 @@ This document has no IANA actions.
 --- back
 
 # Test Vectors
-
-[[OPEN ISSUE: add test vectors for all variants]]
 
 This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized variant defined in {{core-protocol}}.
 The following parameters are specified for each test vector:
@@ -911,5 +907,3 @@ d2e4934bb7dc81c90dd63ae744fd8e57bff5e83f98014ca502b6ace876b455d1e
 
 # Acknowledgments
 {:numbered="false"}
-
-[[TODO: writeme]]
