@@ -16,6 +16,10 @@ author:
     name: Ghous A. Amjad
     organization: Google
     email: "ghous_amjad@alumni.brown.edu"
+ -  ins: S. Hendrickson
+    name: Scott Hendrickson
+    organization: Google
+    email: scott@shendrickson.com
  -  ins: C. A. Wood
     name: Christopher A. Wood
     organization: Cloudflare
