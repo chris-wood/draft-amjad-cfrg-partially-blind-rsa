@@ -576,7 +576,7 @@ given signature.
 
 Applications that use RSAPBSSA MUST guarantee that the choice of public metadata is limited such that there is a significant
 number of server (signer) interactions across many clients for any individual value of public metadata that is signed. This
-should be contextualized to an applications user population size.
+should be contextualized to an application's user population size.
 
 ## Denial of Service
 
