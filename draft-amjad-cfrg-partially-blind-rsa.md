@@ -62,7 +62,7 @@ This has useful applications in practice. For example, metadata might be used
 to encode expiration information for a (message, signature) pair. In practice,
 metadata can be encoded using signing key pairs, e.g., by associating one
 metadata value with one key pair, but this does not scale well for applications
-that have an arbitrary amount of metadata.
+that have large or arbitrary amounts of metadata.
 
 This document specifies a variant of RSABSSA that supports public metadata, denoted
 RSAPBSSA (RSA Partially Blind Signature with Appendix). Similar to RSABSSA in
@@ -567,13 +567,14 @@ to each hash function with a unique domain separation tag.
 
 The unlinkability property of RSAPBSSA guarantees anonymity for any signature amongst the set of all interactions with the
 server (signer) with the same choice of public metadata. In other words, the server is unable to identify the interaction
-that created the signature. The unlinkability guaratee of RSAPBSSA is only useful when there are a significant number of
+that created the signature. The unlinkability guarantee of RSAPBSSA is only useful when there are a significant number of
 server (signer) interactions for any value of public metadata. In the extreme case where each server interaction is performed
 with a different value of public metadata, then the server can uniquely identify the server interaction that created the
 given signature.
 
 Applications that use RSAPBSSA MUST guarantee that the choice of public metadata is limited such that there is a significant
-number of server (signer) interactions for any potential value of public metadata.
+number of server (signer) interactions across many clients for any individual value of public metadata that is signed. This
+should be contextualized to an application's user population size.
 
 ## Denial of Service
 
