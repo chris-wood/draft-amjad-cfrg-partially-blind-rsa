@@ -377,7 +377,7 @@ key `pkS` as follows:
    with `(n, e)` as `pkM`, M as `msg_prime`, and `S` as `sig`.
 
 Verification and the message that applications consume therefore depends on
-which preparation function is used. In particular, if the PrepareIdentity
+which preparation function is used. In particular, if the Prepare
 function is used, then the application message is `input_msg`.
 In contrast, if the PrepareRandomize function is used, then the application
 message is `slice(input_msg, 32, len(input_msg))`, i.e., the prepared message
@@ -492,10 +492,10 @@ function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS sa
 uses the randomized preparation function (PrepareRandomize).
 3. RSAPBSSA-SHA384-PSS-Deterministic: This named variant uses SHA-384 as the hash function,
 MGF1 with SHA-384 as the PSS mask generation function, 48-byte salt length, and uses the
-identity preparation function (PrepareIdentity).
+identity preparation function (Prepare).
 4. RSAPBSSA-SHA384-PSSZERO-Deterministic: This named variant uses SHA-384 as the hash
 function, MGF1 with SHA-384 as the PSS mask generation function, an empty PSS salt, and
-uses the identity preparation function (PrepareIdentity). This is the only variant that
+uses the identity preparation function (Prepare). This is the only variant that
 produces deterministic signatures over the client's input message msg.
 
 The RECOMMENDED variants are RSAPBSSA-SHA384-PSS-Randomized or
