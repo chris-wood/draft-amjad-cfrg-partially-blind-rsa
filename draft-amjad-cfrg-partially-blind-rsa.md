@@ -896,5 +896,6 @@ d2e4934bb7dc81c90dd63ae744fd8e57bff5e83f98014ca502b6ace876b455d1e
 ~~~
 
 # Acknowledgments
-The authors would like to thank Nikita Borisov for pointing out an issue with a prior attempt at mitigating DoS attacks.
 {:numbered="false"}
+
+The authors would like to thank Nikita Borisov for pointing out an issue with a prior attempt at mitigating DoS attacks.
