@@ -583,6 +583,10 @@ AugmentPublicKey in {{augment-public-key}}. In particular, an attacker can pick 
 the output of AugmentPublicKey is very large, leading to more computational cost when verifying signatures.
 Thus, if attackers can force verification with metadata of their choosing, DoS attacks are possible.
 
+For applications where the values of potential public metadata choices are fixed ahead of time, it is possible
+to try and mitigate DoS attacks. If the set of possible metadata choices is small, then applications
+SHOULD use one of the protocol variants in {{RSABSSA}} with distinct keys for each metadata value.
+
 # IANA Considerations
 
 This document has no IANA actions.
