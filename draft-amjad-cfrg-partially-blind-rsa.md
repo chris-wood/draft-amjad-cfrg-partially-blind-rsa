@@ -414,10 +414,11 @@ Steps:
 9. output pk_derived = (n, e')
 ~~~
 
-## Private Key Derivation {#augment-private-key}
+## Key Pair Derivation {#augment-private-key}
 
-The public key augmentation function (DeriveKeyPair) derives a per-metadata private
-signing key that is used by the server in the core protocol.
+The key pair derivation function (DeriveKeyPair) derives a pair of private
+and public keys specific to a metadata value that are used by the server
+in the core protocol.
 
 ~~~
 DeriveKeyPair(sk, info)
