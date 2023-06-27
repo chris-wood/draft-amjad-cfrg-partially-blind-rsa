@@ -168,8 +168,8 @@ such that p = 2q + 1, where q is also a prime number.
 
 A signing key pair is a tuple (sk, pk), where each element is as follows:
 
-- sk = (p, q, phi, d), where phi = (p - 1)(q - 1)
-- pk = (n, e), where n = p * q and d * e == 1 mod phi.
+- sk = (n, p, q, phi, d), where phi = (p - 1)(q - 1), n = p * q, and d is the private exponent
+- pk = (n, e), where n = p * q, and e is hte public exponent such that d * e == 1 mod phi
 
 The procedure for generating a key pair satisfying this requirement is below.
 
@@ -180,7 +180,8 @@ Inputs:
 - bits, length in bits of the RSA modulus, a multiple of 2
 
 Outputs:
-- (sk, pk), a signing key pair
+- sk, metadata-specific private key (n, p, q, phi, d)
+- pk, metadata-specific public key (n, e)
 
 Steps:
 1. p = SafePrime(bits / 2)
@@ -189,8 +190,9 @@ Steps:
 4. phi = (p - 1) * (q - 1)
 5. e = 65537
 6. d = inverse_mod(e, phi)
-7. sk = (p, q, phi, d)
-8. pk = (p * q, e)
+7. n = p * q
+7. sk = (n, p, q, phi, d)
+8. pk = (n, e)
 9. output (sk, pk)
 ~~~
 
@@ -267,7 +269,7 @@ Steps:
 8. inv = inverse_mod(r, n)
 9. If inverse_mod fails, raise an "blinding error" error
    and stop
-10. pk_derived = DerivePublicKey(info)
+10. pk_derived = DerivePublicKey(pk, info)
 11. x = RSAVP1(pk_derived, r)
 12. z = m * x mod n
 13. blinded_msg = int_to_bytes(z, modulus_len)
@@ -291,7 +293,7 @@ Parameters:
 - modulus_len, the length in bytes of the RSA modulus n
 
 Inputs:
-- sk, private key
+- sk, private key (n, p, q, phi, d)
 - blinded_msg, encoded and blinded message to be signed, a
   byte string
 - info, public metadata, a byte string
@@ -370,7 +372,7 @@ consume is `msg`, from which `input_msg` is derived, along with metadata `info`.
 Clients verify the signature over `msg` and `info` using the server's public
 key `pk` as follows:
 
-1. Compute `pk_derived = DerivePublicKey(info)`.
+1. Compute `pk_derived = DerivePublicKey(pk, info)`.
 2. Compute `msg_prime = concat("msg", int_to_bytes(len(info), 4), info, msg)`.
 3. Invoke and output the result of RSASSA-PSS-VERIFY ({{Section 8.1.2 of !RFC8017}})
    with `(n, e)` as `pk_derived`, M as `msg_prime`, and `S` as `sig`.
@@ -390,13 +392,14 @@ is associated with the RSAPBSSA instance and denoted by the `Hash` parameter. No
 the input to HKDF is expanded to account for bias in the output distribution.
 
 ~~~
-DerivePublicKey(info)
+DerivePublicKey(pk, info)
 
 Parameters:
 - modulus_len, the length in bytes of the RSA modulus n
 - Hash, the hash function used to hash the message
 
 Inputs:
+- pk, public key (n, e)
 - info, public metadata, a byte string
 
 Outputs:
@@ -428,18 +431,19 @@ Parameters:
 - Hash, the hash function used to hash the message
 
 Inputs:
-- sk, private key (p, q, phi, d)
+- sk, private key (n, p, q, phi, d)
 - info, public metadata, a byte string
 
 Outputs:
-- sk_derived, metadata-specific private key (p, q, phi, d')
+- sk_derived, metadata-specific private key (n, p, q, phi, d')
 - pk_derived, metadata-specific public key (n, e')
 
 Steps:
-1. (n, e') = DerivePublicKey(info)
+1. (n, e') = DerivePublicKey(n, info)
 2. d' = inverse_mod(e', phi)
-3. sk_derived = (p, q, phi, d')
-4. Output (sk_derived, pk_derived)
+3. sk_derived = (n, p, q, phi, d')
+4. pk_derived = (n, e')
+5. Output (sk_derived, pk_derived)
 ~~~
 
 # Implementation and Usage Considerations
