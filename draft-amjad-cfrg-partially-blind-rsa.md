@@ -599,7 +599,6 @@ This document has no IANA actions.
 --- back
 
 # Acknowledgments
-{:numbered="false"}
 
 The authors would like to thank Nikita Borisov for pointing out an issue with a prior attempt at mitigating DoS attacks.
 
