@@ -164,7 +164,7 @@ functions that are used in this protocol. The Prepare function is as specified i
 The protocol in this document requires signing key pairs to be generated such that
 they satisfy a particular criteria. In particular, each RSA modulus for a key pair
 MUST be the product of two safe primes p and q. A safe prime p is a prime number
-such that p = 2q + 1, where q is also a prime number.
+such that p = 2p' + 1, where p' is also a prime number.
 
 A signing key pair is a tuple (sk, pk), where each element is as follows:
 
@@ -208,8 +208,8 @@ Outputs:
 - p, a safe prime integer
 
 Steps:
-1. q = random_prime(bits - 1)
-2. p = (2 * q) + 1
+1. p' = random_prime(bits - 1)
+2. p = (2 * p') + 1
 3. if is_prime(p) is True, output p, else go to step 1.
 ~~~
 
