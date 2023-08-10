@@ -173,12 +173,11 @@ A signing key pair is a tuple (sk, pk), where each element is as follows:
 
 The procedure for generating a key pair satisfying this requirement is below.
 
-```{css, echo=FALSE}
-.no-scroll {
-   white-space: normal;
-   word-wrap: break-word;
+<style>
+code {
+  white-space : pre-wrap !important;
 }
-```
+</style>
 
 ~~~
 KeyGen(bits)
@@ -239,7 +238,7 @@ Note that this function invokes RSAVP1, which is defined to throw an optional er
 for invalid inputs. However, this error cannot occur based on how RSAVP1 is invoked,
 so this error is not included in the list of errors for Blind.
 
-~~~{class.output="no-scroll"}
+~~~
 Blind(pk, msg, info)
 
 Parameters:
