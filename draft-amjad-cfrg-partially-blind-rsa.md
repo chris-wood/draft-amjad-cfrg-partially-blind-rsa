@@ -173,7 +173,6 @@ A signing key pair is a tuple (sk, pk), where each element is as follows:
 
 The procedure for generating a key pair satisfying this requirement is below.
 
-~~~
 KeyGen(bits)
 
 Inputs:
@@ -194,11 +193,9 @@ Steps:
 7. sk = (n, p, q, phi, d)
 8. pk = (n, e)
 9. output (sk, pk)
-~~~
 
 The procedure for generating a safe prime, denoted SafePrime, is below.
 
-~~~
 SafePrime(bits)
 
 Inputs:
@@ -211,7 +208,6 @@ Steps:
 1. p' = random_prime(bits - 1)
 2. p = (2 * p') + 1
 3. if is_prime(p) is True, output p, else go to step 1.
-~~~
 
 ## Blind {#blind}
 
@@ -232,7 +228,6 @@ Note that this function invokes RSAVP1, which is defined to throw an optional er
 for invalid inputs. However, this error cannot occur based on how RSAVP1 is invoked,
 so this error is not included in the list of errors for Blind.
 
-~~~
 Blind(pk, msg, info)
 
 Parameters:
@@ -274,7 +269,6 @@ Steps:
 12. z = m * x mod n
 13. blinded_msg = int_to_bytes(z, modulus_len)
 14. output blinded_msg, inv
-~~~
 
 The blinding factor r MUST be randomly chosen from a uniform distribution.
 This is typically done via rejection sampling. The function DerivePublicKey
@@ -286,7 +280,6 @@ BlindSign performs the RSA private key operation on the client's
 blinded message input and returns the output encoded as a byte string.
 RSASP1 is as defined in {{Section 5.2.1 of !RFC8017}}.
 
-~~~
 BlindSign(sk, blinded_msg, info)
 
 Parameters:
@@ -314,7 +307,6 @@ Steps:
 5. If m != m', raise "signing failure" and stop
 6. blind_sig = int_to_bytes(s, modulus_len)
 7. output blind_sig
-~~~
 
 ## Finalize
 
@@ -323,7 +315,6 @@ to produce a signature, verifies it for correctness, and outputs the signature
 upon success. Note that this function will internally hash the input message
 as is done in Blind.
 
-~~~
 Finalize(pk, msg, info, blind_sig, inv)
 
 Parameters:
@@ -359,7 +350,6 @@ Steps:
    Hash, MGF, and salt_len as defined in the parameters
 8. If result = "valid signature", output sig, else
    raise "invalid signature" and stop
-~~~
 
 Note that `pk_derived` can be computed once during `Blind` and then passed to
 `Finalize` directly, rather than being recomputed again.
@@ -391,7 +381,6 @@ key that is used in the core protocol. The hash function used for HKDF is that w
 is associated with the RSAPBSSA instance and denoted by the `Hash` parameter. Note that
 the input to HKDF is expanded to account for bias in the output distribution.
 
-~~~
 DerivePublicKey(pk, info)
 
 Parameters:
@@ -415,7 +404,6 @@ Steps:
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
 8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
 9. output pk_derived = (n, e')
-~~~
 
 ## Key Pair Derivation {#augment-private-key}
 
@@ -423,7 +411,6 @@ The key pair derivation function (DeriveKeyPair) derives a pair of private
 and public keys specific to a metadata value that are used by the server
 in the core protocol.
 
-~~~
 DeriveKeyPair(sk, info)
 
 Parameters:
@@ -444,7 +431,6 @@ Steps:
 3. sk_derived = (n, p, q, phi, d')
 4. pk_derived = (n, e')
 5. Output (sk_derived, pk_derived)
-~~~
 
 # Implementation and Usage Considerations
 
