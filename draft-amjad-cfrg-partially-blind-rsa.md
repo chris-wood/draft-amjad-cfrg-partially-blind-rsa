@@ -232,7 +232,7 @@ Note that this function invokes RSAVP1, which is defined to throw an optional er
 for invalid inputs. However, this error cannot occur based on how RSAVP1 is invoked,
 so this error is not included in the list of errors for Blind.
 
-~~~
+<code>
 Blind(pk, msg, info)
 
 Parameters:
@@ -274,7 +274,7 @@ Steps:
 12. z = m * x mod n
 13. blinded_msg = int_to_bytes(z, modulus_len)
 14. output blinded_msg, inv
-~~~
+</code>
 
 The blinding factor r MUST be randomly chosen from a uniform distribution.
 This is typically done via rejection sampling. The function DerivePublicKey
