@@ -174,8 +174,9 @@ A signing key pair is a tuple (sk, pk), where each element is as follows:
 The procedure for generating a key pair satisfying this requirement is below.
 
 <style>
-code {
+pre {
   white-space : pre-wrap !important;
+  word-wrap: break-word;
 }
 </style>
 
