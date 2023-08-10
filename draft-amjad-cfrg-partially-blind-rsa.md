@@ -232,13 +232,6 @@ Note that this function invokes RSAVP1, which is defined to throw an optional er
 for invalid inputs. However, this error cannot occur based on how RSAVP1 is invoked,
 so this error is not included in the list of errors for Blind.
 
-.force-word-wrap pre code {
-   white-space: normal;
-   word-wrap: break-word;
-}
-
-<div class="force-word-wrap">
-
 ~~~
 Blind(pk, msg, info)
 
@@ -282,8 +275,6 @@ Steps:
 13. blinded_msg = int_to_bytes(z, modulus_len)
 14. output blinded_msg, inv
 ~~~
-
-</div>
 
 The blinding factor r MUST be randomly chosen from a uniform distribution.
 This is typically done via rejection sampling. The function DerivePublicKey
