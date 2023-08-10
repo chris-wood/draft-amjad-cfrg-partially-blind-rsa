@@ -173,6 +173,13 @@ A signing key pair is a tuple (sk, pk), where each element is as follows:
 
 The procedure for generating a key pair satisfying this requirement is below.
 
+```{css, echo=FALSE}
+.no-scroll {
+   white-space: normal;
+   word-wrap: break-word;
+}
+```
+
 ~~~
 KeyGen(bits)
 
@@ -239,7 +246,7 @@ so this error is not included in the list of errors for Blind.
 
 <div class="force-word-wrap">
 
-~~~
+~~~{class.output="no-scroll"}
 Blind(pk, msg, info)
 
 Parameters:
