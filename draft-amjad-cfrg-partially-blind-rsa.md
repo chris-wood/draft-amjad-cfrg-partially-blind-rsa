@@ -169,7 +169,7 @@ such that p = 2p' + 1, where p' is also a prime number.
 A signing key pair is a tuple (sk, pk), where each element is as follows:
 
 - sk = (n, p, q, phi, d), where phi = (p - 1)(q - 1), n = p * q, and d is the private exponent
-- pk = (n, e), where n = p * q, and e is hte public exponent such that d * e == 1 mod phi
+- pk = (n, e), where n = p * q, and e is the public exponent such that d * e == 1 mod phi
 
 The procedure for generating a key pair satisfying this requirement is below.
 
@@ -221,7 +221,7 @@ the server, encoded as a byte string, and the corresponding inverse, an integer.
 RSAVP1 and EMSA-PSS-ENCODE are as defined in {{Sections 5.2.2 and 9.1.1 of !RFC8017}},
 respectively.
 
-If this function fails with an "blinding error" error, implementations SHOULD retry
+If this function fails with a "blinding error" error, implementations SHOULD retry
 the function again. The probability of one or more such errors in sequence is negligible.
 This function can also fail with an "invalid input" error, which indicates that one of
 the inputs (likely the public key) was invalid. Implementations SHOULD update the public
@@ -456,7 +456,7 @@ in this document. This includes error handling and API considerations.
 The high-level functions specified in {{core-protocol}} are all fallible. The explicit errors
 generated throughout this specification, along with the conditions that lead to each error,
 are listed in the definitions for Blind, BlindSign, and Finalize.
-These errors are meant as a guide for implementors. They are not an exhaustive list of all
+These errors are meant as a guide for implementers. They are not an exhaustive list of all
 the errors an implementation might emit. For example, implementations might run out of memory.
 
 Moreover, implementations can handle errors as needed or desired. Where applicable, this document
@@ -485,7 +485,7 @@ OID {{!RFC5756}}. It MUST NOT use the rsaEncryption OID {{?RFC5280}}.
 In this section, we define named variants of RSAPBSSA. These variants consider
 different sets of RSASSA-PSS parameters as defined in {{Section 9.1.1 of ?RFC8017}} and explicitly
 specified in {{Section 5 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}. For algorithms unique
-to RSAPBSSA, the choice of hash function specifies the instantation of HKDF in DerivePublicKey in
+to RSAPBSSA, the choice of hash function specifies the instantiation of HKDF in DerivePublicKey in
 {{augment-public-key}}. The different types of Prepare functions are specified in
 {{Section 4.1 of RSABSSA}}.
 
@@ -543,7 +543,7 @@ also apply to RSAPBSSA here. We present additional security considerations speci
 
 An essential component of RSAPBSSA is that the KeyGen algorithm in {{key-generation}} generates a RSA
 modulus that is the product of two strong primes. This is essential to ensure that the resulting outputs
-of DerivePublicKey in {{augment-public-key}} does cause errors in DeriveKeyPair in {{augment-private-key}}.
+of DerivePublicKey in {{augment-public-key}} do cause errors in DeriveKeyPair in {{augment-private-key}}.
 We note that an error in DeriveKeyPair would incur if the output of DerivePublicKey does not have an
 inverse modulo phi. By choosing the RSA modulus as the product of two strong primes, we guarantee the output of
 DerivePublicKey will never incur errors in DeriveKeyPair.
@@ -555,11 +555,11 @@ of public metadata.
 
 ## Domain Separation for Public Key Augmentation
 
-The purpose of domain separation is to guarantee that the security analysis of any cryptographic protocol remain true
+The purpose of domain separation is to guarantee that the security analysis of any cryptographic protocol remains true
 even if multiple instances of the protocol or multiple hash functions in a single instance of the protocol
 are instantiated based on one underlying hash function.
 
-The DerivePublicKey in {{augment-public-key}} of this document already provide domain separation by using the RSA modulus
+The DerivePublicKey function in {{augment-public-key}} of this document already provide domain separation by using the RSA modulus
 as input to the underlying HKDF as the info argument. As each instance of RSAPBSSA will have a different RSA modulus, this
 effectively ensures that the outputs of the underlying hash functions for multiple instances will be different
 even for the same input.
@@ -583,7 +583,7 @@ should be contextualized to an application's user population size.
 
 ## Denial of Service
 
-RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
+RSAPBSSA is susceptible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
 DerivePublicKey in {{augment-public-key}}. In particular, an attacker can pick public metadata such that
 the output of DerivePublicKey is very large, leading to more computational cost when verifying signatures.
 Thus, if attackers can force verification with metadata of their choosing, DoS attacks are possible.
@@ -608,7 +608,7 @@ This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized varian
 The following parameters are specified for each test vector:
 
 - p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.
-- msg: Input messsage being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.
+- msg: Input message being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.
 - info: Public metadata bound to the signature, encoded as a hexadecimal string.
 - eprime: The augmented public key exponent corresponding to e and metadata, encoded as a hexadecimal string.
 - blind: The message blinding value, encoded as a hexadecimal string.
