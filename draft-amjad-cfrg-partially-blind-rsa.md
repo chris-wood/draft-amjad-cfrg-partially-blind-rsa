@@ -611,7 +611,7 @@ The following parameters are specified for each test vector:
 - msg: Input messsage being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.
 - info: Public metadata bound to the signature, encoded as a hexadecimal string.
 - eprime: The augmented public key exponent corresponding to e and metadata, encoded as a hexadecimal string.
-- blind: The message blinding value, encoded as a hexadecimal string.
+- r: The message blinding value, encoded as a hexadecimal string.
 - salt: Randomly-generated salt used when computing the signature. The length is 48 bytes.
 - blinded\_msg, blinded\_sig: The protocol values exchanged during the computation,
   encoded as hexadecimal strings.
@@ -651,7 +651,7 @@ eprime: 30581b1adab07ac00a5057e2986f37caaa68ae963ffbc4d36c16ea5f3
 cbddf746c7d0f4ae2690d82a2757b088820c0d086a40d180b2524687060d768ad
 5e431732102f4bc3572d97e01dcd6301368f255faae4606399f91fa913a6d699d
 6ef1
-blind: d55491221c9a9ce5687b84669880abbc4db57c8f82864a450a5bf7c3f0
+r: d55491221c9a9ce5687b84669880abbc4db57c8f82864a450a5bf7c3f0
 902884fa418c74bf663f3bfcff74a4792356f3ce052f128b084f8b028cf432533
 27514f4b38430c69f19f155634429803badd1f6849d8603882eb9b648b697cb2f
 2c4069b504562e19bb9f1cf99da47c198c2ae04f4bd3add78025e80f146edce48
@@ -721,7 +721,7 @@ eprime: 2ed579fcdf2d328ebc686c52ccaec247018832acd530a2ac72c0ec2b9
 d9ccd60aa60a0c59aac271a8caf9ee68a9d9ff281367dae09d588d3c7bca7f18d
 e48b6981bbc729c4925c65e4b2a7f054facbb7e5fc6e4c6c10110c62ef0b94eec
 397b
-blind: 532103acf62670e3176eb1cfee7c2c46c7986704b869387924c33e8358
+r: 532103acf62670e3176eb1cfee7c2c46c7986704b869387924c33e8358
 8c7cac67882570aede836b51b44a565c872a91bbf4f0f8396019113ef382963d3
 a51b91429993e821217d3e85b2253e0daa0e9cfc440c37a37707f7aed383d98b3
 150f21e1146c58c28d4a49046b8e97f834e4cb95e5483dfc42eaa17bdce947631
@@ -791,7 +791,7 @@ eprime: 30581b1adab07ac00a5057e2986f37caaa68ae963ffbc4d36c16ea5f3
 cbddf746c7d0f4ae2690d82a2757b088820c0d086a40d180b2524687060d768ad
 5e431732102f4bc3572d97e01dcd6301368f255faae4606399f91fa913a6d699d
 6ef1
-blind: 6e1de89fc58417836aa76fefe4876b8b311af2eb94a8226d5796273171
+r: 6e1de89fc58417836aa76fefe4876b8b311af2eb94a8226d5796273171
 48551d90b6f9db614b590e7f66f34644a2f6a3568ec78852b7f45876f576a7ee6
 0c19bb0fbbdf1c85d7b36cf7bdf80fb925830c07285efae69e0c019d8d99fd5c6
 20f83361c9411541fddf4bfe27e73f756bf594742a8253119d134e1ad67f02228
@@ -861,7 +861,7 @@ eprime: 2ed579fcdf2d328ebc686c52ccaec247018832acd530a2ac72c0ec2b9
 d9ccd60aa60a0c59aac271a8caf9ee68a9d9ff281367dae09d588d3c7bca7f18d
 e48b6981bbc729c4925c65e4b2a7f054facbb7e5fc6e4c6c10110c62ef0b94eec
 397b
-blind: 35deeb769ae3dce60033cbaeceeec511cd980307f53810c1b33934eeee
+r: 35deeb769ae3dce60033cbaeceeec511cd980307f53810c1b33934eeee
 c194283834419fb190881213cfc0d91ff6307862ce143586ad9580057e3af6bb4
 a405075ed9abf1f3b5a5cfb0c7fc59b952401cb28c04f9f85a9a3708fd51c74af
 a1a1028a821beb2f8165678657f0d2effb7a1add5421216f3c50253a6f8d0d8ed
