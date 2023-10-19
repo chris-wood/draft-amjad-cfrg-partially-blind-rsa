@@ -115,14 +115,14 @@ input_msg = Prepare(msg)
 The client then initiates the blind signature protocol by computing:
 
 ~~~
-blinded_msg, inv = Blind(pk, input_msg, info)
+blind_msg, inv = Blind(pk, input_msg, info)
 ~~~
 
-The client then sends `blinded_msg` to the server, which then processes the message
+The client then sends `blind_msg` to the server, which then processes the message
 by computing:
 
 ~~~
-blind_sig = BlindSign(sk, blinded_msg, info)
+blind_sig = BlindSign(sk, blind_msg, info)
 ~~~
 
 The server then sends `blind_sig` to the client, which then finalizes the protocol by computing:
@@ -143,12 +143,12 @@ In pictures, the protocol runs as follows:
    Client(pk, msg, info)          Server(sk, pk, info)
   -------------------------------------------------------
   input_msg = Prepare(msg)
-  blinded_msg, inv = Blind(pk, input_msg, info)
+  blind_msg, inv = Blind(pk, input_msg, info)
 
-                        blinded_msg
+                        blind_msg
                         ---------->
 
-            blind_sig = BlindSign(sk, blinded_msg, info)
+            blind_sig = BlindSign(sk, blind_msg, info)
 
                          blind_sig
                         <----------
@@ -248,7 +248,7 @@ Inputs:
 - info, public metadata, a byte string
 
 Outputs:
-- blinded_msg, a byte string of length modulus_len
+- blind_msg, a byte string of length modulus_len
 - inv, an integer
 
 Errors:
@@ -273,8 +273,8 @@ Steps:
 10. pk_derived = DerivePublicKey(pk, info)
 11. x = RSAVP1(pk_derived, r)
 12. z = m * x mod n
-13. blinded_msg = int_to_bytes(z, modulus_len)
-14. output blinded_msg, inv
+13. blind_msg = int_to_bytes(z, modulus_len)
+14. output blind_msg, inv
 ~~~
 
 The blinding factor r MUST be randomly chosen from a uniform distribution.
@@ -288,14 +288,14 @@ blinded message input and returns the output encoded as a byte string.
 RSASP1 is as defined in {{Section 5.2.1 of !RFC8017}}.
 
 ~~~
-BlindSign(sk, blinded_msg, info)
+BlindSign(sk, blind_msg, info)
 
 Parameters:
 - modulus_len, the length in bytes of the RSA modulus n
 
 Inputs:
 - sk, private key (n, p, q, phi, d)
-- blinded_msg, encoded and blinded message to be signed, a
+- blind_msg, encoded and blinded message to be signed, a
   byte string
 - info, public metadata, a byte string
 
@@ -308,7 +308,7 @@ Errors:
   to sign is not an integer between 0 and n - 1 (raised by RSASP1)
 
 Steps:
-1. m = bytes_to_int(blinded_msg)
+1. m = bytes_to_int(blind_msg)
 2. sk_derived, pk_derived = DeriveKeyPair(sk, info)
 3. s = RSASP1(sk_derived, m)
 4. m' = RSAVP1(pk_derived, s)
@@ -606,15 +606,15 @@ The authors would like to thank Nikita Borisov for pointing out an issue with a 
 # Test Vectors
 
 This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized variant defined in {{core-protocol}}.
-The following parameters are specified for each test vector:
+The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:
 
 - p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.
 - msg: Input message being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.
 - info: Public metadata bound to the signature, encoded as a hexadecimal string.
 - eprime: The augmented public key exponent corresponding to e and metadata, encoded as a hexadecimal string.
-- blind: The message blinding value, encoded as a hexadecimal string.
+- r: The message blinding value, encoded as a hexadecimal string.
 - salt: Randomly-generated salt used when computing the signature. The length is 48 bytes.
-- blinded\_msg, blinded\_sig: The protocol values exchanged during the computation,
+- blind\_msg, blind\_sig: The protocol values exchanged during the computation,
   encoded as hexadecimal strings.
 - sig: The output message signature.
 
@@ -652,7 +652,7 @@ eprime: 30581b1adab07ac00a5057e2986f37caaa68ae963ffbc4d36c16ea5f3
 cbddf746c7d0f4ae2690d82a2757b088820c0d086a40d180b2524687060d768ad
 5e431732102f4bc3572d97e01dcd6301368f255faae4606399f91fa913a6d699d
 6ef1
-blind: d55491221c9a9ce5687b84669880abbc4db57c8f82864a450a5bf7c3f0
+r: d55491221c9a9ce5687b84669880abbc4db57c8f82864a450a5bf7c3f0
 902884fa418c74bf663f3bfcff74a4792356f3ce052f128b084f8b028cf432533
 27514f4b38430c69f19f155634429803badd1f6849d8603882eb9b648b697cb2f
 2c4069b504562e19bb9f1cf99da47c198c2ae04f4bd3add78025e80f146edce48
@@ -662,7 +662,7 @@ aa171ac4cec9d1cddd8066b13767901dcb339e2cce40d11f5cff6c870012bca49
 aff57f2170e31ebe85564e3f026d8cd1835e59144fb8c008391c55d2fb1a5488
 salt: 648ea74482fbab69876817ee3c2055a6921a458648c802c09a23f8825b2
 59724e41c960ef29febe16a04e120c8b1cc1a
-blinded_msg: cfd613e27b8eb15ee0b1df0e1bdda7809a61a29e9b6e9f3ec7c3
+blind_msg: cfd613e27b8eb15ee0b1df0e1bdda7809a61a29e9b6e9f3ec7c3
 45353437638e85593a7309467e36396b0515686fe87330b312b6f89df26dc1cc8
 8dd222186ca0bfd4ffa0fd16a9749175f3255425eb299e1807b76235befa57b28
 f50db02f5df76cf2f8bcb55c3e2d39d8c4b9a0439e71c5362f35f3db768a5865b
@@ -671,7 +671,7 @@ f1d103c31549dcf767798079f88833b579424ed5b3d700162136459dc29733256
 f18ceb74ccf0bc542db8829ca5e0346ad3fe36654715a3686ceb69f73540efd20
 530a59062c13880827607c68d00993b47ad6ba017b95dfc52e567c4bf65135072
 b12a4
-blinded_sig: ca7d4fd21085de92b514fbe423c5745680cace6ddfa864a9bd97
+blind_sig: ca7d4fd21085de92b514fbe423c5745680cace6ddfa864a9bd97
 d29f3454d5d475c6c1c7d45f5da2b7b6c3b3bc68978bb83929317da25f491fee8
 6ef7e051e7195f3558679b18d6cd3788ac989a3960429ad0b7086945e8c4d38a1
 b3b52a3903381d9b1bf9f3d48f75d9bb7a808d37c7ecebfd2fea5e89df59d4014
@@ -722,7 +722,7 @@ eprime: 2ed579fcdf2d328ebc686c52ccaec247018832acd530a2ac72c0ec2b9
 d9ccd60aa60a0c59aac271a8caf9ee68a9d9ff281367dae09d588d3c7bca7f18d
 e48b6981bbc729c4925c65e4b2a7f054facbb7e5fc6e4c6c10110c62ef0b94eec
 397b
-blind: 532103acf62670e3176eb1cfee7c2c46c7986704b869387924c33e8358
+r: 532103acf62670e3176eb1cfee7c2c46c7986704b869387924c33e8358
 8c7cac67882570aede836b51b44a565c872a91bbf4f0f8396019113ef382963d3
 a51b91429993e821217d3e85b2253e0daa0e9cfc440c37a37707f7aed383d98b3
 150f21e1146c58c28d4a49046b8e97f834e4cb95e5483dfc42eaa17bdce947631
@@ -732,7 +732,7 @@ a51b91429993e821217d3e85b2253e0daa0e9cfc440c37a37707f7aed383d98b3
 7436765ba1df7c9a5cf37d8ec3dced6f5689da9703618a5cc7bf6d60f7b4209c
 salt: 134520fb9ae6076594b4488fa31cae4e8e3efaca5ae4377bd586aac58e9
 0f8925826b4b4fff2e21fdb933c4fbb6467a2
-blinded_msg: 5e6568cd0bf7ea71ad91e0a9708abb5e97661c41812eb994b672
+blind_msg: 5e6568cd0bf7ea71ad91e0a9708abb5e97661c41812eb994b672
 f10aa8983151113aeaabcf1306fa5a493e3dbdd58fc8bdb61aac934fae832676b
 cab7abacdcc1b9c1f2af3586ae009042293b6945fee0aeffb2d2b8a24f82614b8
 be39bab71a535f6d65f1631e927dbd471b0753e7a63a201c7ecd26e7fbbb5e21e
@@ -741,7 +741,7 @@ be39bab71a535f6d65f1631e927dbd471b0753e7a63a201c7ecd26e7fbbb5e21e
 91e967241ba45f3509d63ded5f9b358f4216f37a885e563b7baa93a717ca7cdbe
 10e398d14bb2d5a1376b4a5f83226ce2c575087bc28d743caeff9c1b11cc8bd02
 f5f14
-blinded_sig: 72c4e0f4f677aa1dbb686e23b5944b3afdc7f824711a1f7486d1
+blind_sig: 72c4e0f4f677aa1dbb686e23b5944b3afdc7f824711a1f7486d1
 ed6fa20aad255a1412885aee04c64359964e694a713da2a1684325c1c31401cac
 1ea39a9e454675b55f743ff144ac605d0ed254b12d9bdd43b0e8a17c0d4711239
 732e45e4166261d0b16d2f29403c5f2584a29b225daa7530ba15fc9af15ed2ce8
@@ -792,7 +792,7 @@ eprime: 30581b1adab07ac00a5057e2986f37caaa68ae963ffbc4d36c16ea5f3
 cbddf746c7d0f4ae2690d82a2757b088820c0d086a40d180b2524687060d768ad
 5e431732102f4bc3572d97e01dcd6301368f255faae4606399f91fa913a6d699d
 6ef1
-blind: 6e1de89fc58417836aa76fefe4876b8b311af2eb94a8226d5796273171
+r: 6e1de89fc58417836aa76fefe4876b8b311af2eb94a8226d5796273171
 48551d90b6f9db614b590e7f66f34644a2f6a3568ec78852b7f45876f576a7ee6
 0c19bb0fbbdf1c85d7b36cf7bdf80fb925830c07285efae69e0c019d8d99fd5c6
 20f83361c9411541fddf4bfe27e73f756bf594742a8253119d134e1ad67f02228
@@ -802,7 +802,7 @@ e80a96449390e9032bad350645f5d4a162ddf3d61506ef6737b4f9fe6064a1d2f
 afc7849e5039a98ebf14a800dc2423fccc1293f28a2c66ec22983cab922c1cc6
 salt: 1ade5e965d1946a69dc495e78c8524910094f08405471664d4898fa3612
 bf03fd03b3ae8140a737cb13e223e35219b58
-blinded_msg: 92d5456738e0cfe0fa770b51e6a72d633d7cec3a945459f1db96
+blind_msg: 92d5456738e0cfe0fa770b51e6a72d633d7cec3a945459f1db96
 dbc500a5d1bca34a839059579759301c098231b102fb1e114bf9f892f42f902a3
 36f4a3585b23efa906dfcb94213f4d3b39951551cedecbf51efa213ad030cf821
 ee3fa46a57d67429f838ff728f47111f7f1b22000a979c0f56cc581396935780d
@@ -811,7 +811,7 @@ c7a377effa0f08d9273cd33536b2625c9575d10636cc964636a1500f4fcb22aab
 bef77fe415cbc7245c1032d34bd480ee338f55be0a79c0076d9cf9c94c0db3003
 a33b23c62dbd1a85f2b15db5d153b318cca53c6d68e1e63bafa39c9a43be72f36
 d2569
-blinded_sig: a76a1c53566a9781de04d87e8c3a0bc902b47819e7b900580654
+blind_sig: a76a1c53566a9781de04d87e8c3a0bc902b47819e7b900580654
 215b0a710cb563b085b5e9fff150791f759da03a139dfc9159c21410f1e3d345b
 8c5dcca35211772900f85c5eec065987cbdbf303e9651196223263a713e4135d6
 b20bfa8fb8212341665647a9a7e07a831ccbf9e62d9366ec9ac0bbe96228e6fbb
@@ -862,7 +862,7 @@ eprime: 2ed579fcdf2d328ebc686c52ccaec247018832acd530a2ac72c0ec2b9
 d9ccd60aa60a0c59aac271a8caf9ee68a9d9ff281367dae09d588d3c7bca7f18d
 e48b6981bbc729c4925c65e4b2a7f054facbb7e5fc6e4c6c10110c62ef0b94eec
 397b
-blind: 35deeb769ae3dce60033cbaeceeec511cd980307f53810c1b33934eeee
+r: 35deeb769ae3dce60033cbaeceeec511cd980307f53810c1b33934eeee
 c194283834419fb190881213cfc0d91ff6307862ce143586ad9580057e3af6bb4
 a405075ed9abf1f3b5a5cfb0c7fc59b952401cb28c04f9f85a9a3708fd51c74af
 a1a1028a821beb2f8165678657f0d2effb7a1add5421216f3c50253a6f8d0d8ed
@@ -872,7 +872,7 @@ e2c8a130ea7f90fe915b5c3adaa24a6c300c23d8f670d330b592a7c05f7588324
 15038555289ea405025740a1d2a3098d34d094b566d0b973e661d855fb90be3c
 salt: df4fbdf415184c20fad0418f27c35974db8c321e84c54b21e1e2619dbfa
 0ad70db62c01783ffe796e8474596d7eb3fd8
-blinded_msg: ba562cba0e69070dc50384456391defa410d36fa853fd235902f
+blind_msg: ba562cba0e69070dc50384456391defa410d36fa853fd235902f
 f5d015d688a44def6b6a7e71a69bff8ee510f5a9aa44e9afddd3e766f2423b3fc
 783fd1a9ab618586110987c1b3ddce62d25cae500aa92a6b886cb609829d06e67
 fbf28fbbf3ee7d5cc125481dd002b908097732e0df06f288cc6eb54565f8153d4
@@ -881,7 +881,7 @@ fbf28fbbf3ee7d5cc125481dd002b908097732e0df06f288cc6eb54565f8153d4
 eb6f90cc74bc4bb5ea7529ded9cde2d489575d549b884379abe6d7b71969e6a9c
 09f1963d2719eefccd5f2a407845961ccc1fa580a93c72902b2499d96f89e6c53
 fc888
-blinded_sig: 280c5934022fd17f7f810d4f7adf1d29ced47d098834411d6721
+blind_sig: 280c5934022fd17f7f810d4f7adf1d29ced47d098834411d6721
 63cc793bcaad239d07c4c45048a682995950ce84703064cd8c16d6f2579f7a65b
 66c274faccc6c73c9d299dcf35c96338c9b81af2f93554a78528551e04be931c8
 502ee6a21ef65d1fa3cd049a993e261f85c841b75857d6bf02dd4532e14702f8f
