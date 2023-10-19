@@ -350,7 +350,7 @@ Errors:
 
 Steps:
 1. If len(blind_sig) != modulus_len, raise "unexpected input size" and stop
-2. z = bytes_to_int(blind_sig)
+2. z = bytes_to_int(blind_sig) mod n
 3. s = z * inv mod n
 4. sig = int_to_bytes(s, modulus_len)
 5. msg_prime = concat("msg", int_to_bytes(len(info), 4), info, msg)
