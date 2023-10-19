@@ -395,7 +395,7 @@ the input to HKDF is expanded to account for bias in the output distribution.
 DerivePublicKey(pk, info)
 
 Parameters:
-- modulus_len, the length in bytes of the RSA modulus n
+- modulus_len, the length in bytes of the RSA modulus n. This MUST be a power of 2.
 - Hash, the hash function used to hash the message
 
 Inputs:
