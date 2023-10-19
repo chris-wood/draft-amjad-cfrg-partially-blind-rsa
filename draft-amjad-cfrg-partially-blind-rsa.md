@@ -388,7 +388,7 @@ with the random prefix removed.
 ## Public Key Derivation {#augment-public-key}
 
 The public key derivation function (DerivePublicKey) derives a per-metadata public
-key that is used in the core protocol. The hash function used for HKDF is that which
+key that is used in the core protocol. The hash function used for HKDF as defined in {{!RFC5869}} is that which
 is associated with the RSAPBSSA instance and denoted by the `Hash` parameter. Note that
 the input to HKDF is expanded to account for bias in the output distribution.
 
