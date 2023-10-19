@@ -467,10 +467,7 @@ the server's public key. {{blind}} indicates that implementations SHOULD
 retry the Blind function when this error occurs, but an implementation could also handle this
 exceptional event differently, e.g., by informing the server that the key has been factored.
 
-## Signing Key Generation and Usage {#cert-oid}
-
-The RECOMMENDED method for generating the server signing key pair is as specified in FIPS 186-4
-{{?DSS=DOI.10.6028/NIST.FIPS.186-5}}.
+## Signing Key Usage {#cert-oid}
 
 A server signing key MUST NOT be reused for any other protocol beyond RSAPBSSA. In particular,
 the same signing key MUST NOT be used for both the RSAPBSSA and RSABSSA protocols. Moreover, a
