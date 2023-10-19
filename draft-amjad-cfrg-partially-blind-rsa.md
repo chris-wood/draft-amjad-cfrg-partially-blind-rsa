@@ -258,7 +258,7 @@ Errors:
 
 Steps:
 1. msg_prime = concat("msg", int_to_bytes(len(info), 4), info, msg)
-2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n))
+2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n) - 1)
    with Hash, MGF, and salt_len as defined in the parameters
 3. If EMSA-PSS-ENCODE raises an error, raise the error and stop
 4. m = bytes_to_int(encoded_msg)
