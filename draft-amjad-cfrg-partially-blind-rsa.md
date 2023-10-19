@@ -67,7 +67,8 @@ that have large or arbitrary amounts of metadata.
 This document specifies a variant of RSABSSA that supports public metadata, denoted
 RSAPBSSA (RSA Partially Blind Signature with Appendix). Similar to RSABSSA in
 {{RSABSSA}}, RSAPBSSSA is defined in such a way that the resulting (unblinded)
-signature can be verified with a standard RSA-PSS library.
+signature can be verified with a standard RSA-PSS library that does not impose a
+range limit on the public exponent.
 
 # Conventions and Definitions
 
@@ -469,7 +470,7 @@ exceptional event differently, e.g., by informing the server that the key has be
 ## Signing Key Generation and Usage {#cert-oid}
 
 The RECOMMENDED method for generating the server signing key pair is as specified in FIPS 186-4
-{{?DSS=DOI.10.6028/NIST.FIPS.186-4}}.
+{{?DSS=DOI.10.6028/NIST.FIPS.186-5}}.
 
 A server signing key MUST NOT be reused for any other protocol beyond RSAPBSSA. In particular,
 the same signing key MUST NOT be used for both the RSAPBSSA and RSABSSA protocols. Moreover, a
