@@ -94,8 +94,8 @@ in this document:
   concat(0x01, 0x0203, 0x040506) = 0x010203040506.
 - slice(x, i, j): Return bytes in the byte string `x` starting from offset `i` and ending at
   offset `j`, inclusive. For example, slice(0x010203040506, 1, 5) = 0x0203040506.
-- random_prime(b): Return a random prime number of length b bits.
-- is_prime(p): Return true if the input integer p is prime, and false otherwise.
+- random_prime(b): Return a random prime number of length b bits. This operation may use a probabilistic primality test.
+- is_prime(p): Return true if the input integer p is prime, and false otherwise. This operation may use a probabilistic primality test.
 
 # RSAPBSSA Protocol {#core-protocol}
 
