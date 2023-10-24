@@ -210,11 +210,12 @@ Outputs:
 
 Steps:
 1. p' = random_prime(bits - 1)
-2. p = (2 * p') + 1
-3. if is_prime(p) is True and p > 2^(bits-0.5), output p, else go to step 1.
+2. if p' <= ( 2^(bits-0.5) - 1 ) / 2, go to step 1.
+3. p = (2 * p') + 1
+4. if is_prime(p) is True, output p, else go to step 1.
 ~~~
 
-Note that SafePrime(bits) as described above can be very slow depending on the value of bits. A much faster method would run a fast primality test (such as trial divisions) on both the inner (p') and outer (p) prime candidates and check that p > 2^(bits-0.5) before running an expensive primality test (such as Miller-Rabin) on either value to confirm primality with high probability.
+Note that SafePrime(bits) as described above can be very slow depending on the value of bits. A much faster method would check if p' is large enough, then run a fast primality test (such as trial divisions) on both p' and p and only then run an expensive primality test (such as Miller-Rabin) on both values to confirm primality with high probability.
 
 ## Blind {#blind}
 
