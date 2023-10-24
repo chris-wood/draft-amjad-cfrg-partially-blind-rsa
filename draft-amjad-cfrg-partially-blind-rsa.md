@@ -540,7 +540,7 @@ also apply to RSAPBSSA here. We present additional security considerations speci
 ## Strong RSA Modulus Key Size and Generation
 
 For security, modulus size of at least 2048 bits is recommended. Since very large keys can be expensive to support,
-4096 bits can be treated as an upper limit for the modulus size. 
+4096 bits can be treated as an upper limit for the modulus size.
 
 An essential component of RSAPBSSA is that the KeyGen algorithm in {{key-generation}} generates a RSA
 modulus that is the product of two strong primes. This is essential to ensure that the resulting outputs
