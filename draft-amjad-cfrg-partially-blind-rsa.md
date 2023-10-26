@@ -581,13 +581,9 @@ should be contextualized to an application's user population size.
 
 ## Denial of Service
 
-RSAPBSSA is susceptible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
-DerivePublicKey in {{augment-public-key}}. In particular, an attacker can pick public metadata such that
-the output of DerivePublicKey is very large, leading to more computational cost when verifying signatures.
-Thus, if attackers can force verification with metadata of their choosing, DoS attacks are possible.
+RSAPBSSA may be susceptible to Denial of Service (DoS) attacks if the size of the public exponent derived from public metadata in DerivePublicKey in {{augment-public-key}} is left as a choice for the user. In particular, an attacker can pick public metadata such that the output of DerivePublicKey is very large, leading to more computational cost on signing and verification servers. Thus, if attackers can force verification with arbitrarily lare public exponents of their choosing, DoS attacks are possible. Fortunately, our protocol does not provide the flexibility of picking the length of the derived public exponent and thus we avoid this situation. However, we note that compared to RSABSSA, RSAPBSSA 
 
-For applications where the values of potential public metadata choices are fixed ahead of time, it is possible
-to try and mitigate DoS attacks. If the set of possible metadata choices is small, then applications
+For applications where the values of potential public metadata choices are fixed ahead of time and the set of possible metadata choices is small, then applications
 SHOULD use one of the protocol variants in {{RSABSSA}} with distinct keys for each metadata value.
 
 # IANA Considerations
