@@ -43,7 +43,7 @@ It is an extension to the RSABSSA protocol recently specified by the CFRG.
 
 # Introduction
 
-{{!RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}} specifies the RSA blind
+{{?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}} specifies the RSA blind
 signature protocol, denoted RSABSSA. This is a two-party protocol between
 client and server (or signer) where they interact to compute
 `sig = Sign(sk, input_msg)`, where `input_msg = Prepare(msg)` is a prepared
@@ -534,7 +534,7 @@ to the differences between the Strong RSA and RSA problems.
 The final property of unlinkability relies only on the fact that the underlying hash functions are modelled
 as random oracles.
 
-All the security considerations of RSABSSA in {{Section 7 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}
+All the security considerations of RSABSSA in {{Section 8 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}
 also apply to RSAPBSSA here. We present additional security considerations specific to RSAPBSSA below.
 
 ## Strong RSA Modulus Key Generation
@@ -602,7 +602,7 @@ The authors would like to thank Nikita Borisov for pointing out an issue with a 
 
 # Test Vectors
 
-This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized variant defined in {{core-protocol}}.
+This section includes test vectors for the RSAPBSSA-SHA384-PSS-Deterministic variant defined in {{core-protocol}}.
 The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:
 
 - p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.
