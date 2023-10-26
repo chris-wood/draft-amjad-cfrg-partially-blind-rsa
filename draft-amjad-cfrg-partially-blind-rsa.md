@@ -602,7 +602,7 @@ The authors would like to thank Nikita Borisov for pointing out an issue with a 
 
 # Test Vectors
 
-This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized variant defined in {{core-protocol}}.
+This section includes test vectors for the RSAPBSSA-SHA384-PSS-Deterministic variant defined in {{core-protocol}}.
 The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:
 
 - p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.
