@@ -534,7 +534,7 @@ to the differences between the Strong RSA and RSA problems.
 The final property of unlinkability relies only on the fact that the underlying hash functions are modelled
 as random oracles.
 
-All the security considerations of RSABSSA in {{Section 7 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}}
+All the security considerations of RSABSSA in {{Section 7 of RSABSSA}}
 also apply to RSAPBSSA here. We present additional security considerations specific to RSAPBSSA below.
 
 ## Strong RSA Modulus Key Generation
