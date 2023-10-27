@@ -598,7 +598,6 @@ SHOULD use one of the protocol variants in {{RSABSSA}} with distinct keys for ea
 ## Timing Side Channels and Fault Attacks
 All considerations listed in {{Section 7.1 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}} also apply to RSAPBSSA. Additionally, in RSAPBSSA, the server performs additional operations involving the private key, specifically the inversion of the derived public exponent (d' = inverse_mod(e', phi) in {{augment-private-key}}) which is a potential target for side-channel attacks. The classic extended Euclidean GCD algorithm used for this operation is not constant-time. However a binary GCD can be used, for which optimized and constant-time implementations exist ({{TP20}}).
 
-
 # IANA Considerations
 
 This document has no IANA actions.
