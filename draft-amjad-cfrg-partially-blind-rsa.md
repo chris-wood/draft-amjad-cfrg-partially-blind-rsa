@@ -32,6 +32,11 @@ author:
 normative:
 
 informative:
+   TP20:
+    title: "Optimized Binary GCD for Modular Inversion"
+    target: https://eprint.iacr.org/2020/972.pdf
+    author:
+      - ins: T. Pornin
 
 
 --- abstract
@@ -589,6 +594,10 @@ Thus, if attackers can force verification with metadata of their choosing, DoS a
 For applications where the values of potential public metadata choices are fixed ahead of time, it is possible
 to try and mitigate DoS attacks. If the set of possible metadata choices is small, then applications
 SHOULD use one of the protocol variants in {{RSABSSA}} with distinct keys for each metadata value.
+
+## Timing Side Channels and Fault Attacks
+All considerations listed in {{Section 7.1 of ?RSABSSA=I-D.irtf-cfrg-rsa-blind-signatures}} also apply to RSAPBSSA. Additionally, in RSAPBSSA, the server performs additional operations involving the private key, specifically the inversion of the derived public exponent (d' = inverse_mod(e', phi) in {{augment-private-key}}) which is a potential target for side-channel attacks. The classic extended Euclidean GCD algorithm used for this operation is not constant-time. However a binary GCD can be used, for which optimized and constant-time implementations exist ({{TP20}}).
+
 
 # IANA Considerations
 
