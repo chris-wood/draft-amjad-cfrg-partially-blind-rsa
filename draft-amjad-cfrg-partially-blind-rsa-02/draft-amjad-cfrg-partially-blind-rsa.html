@@ -13,24 +13,24 @@
        This document specifies a blind RSA signature protocol that supports public metadata.
 It is an extension to the RSABSSA protocol recently specified by the CFRG. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.19.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-amjad-cfrg-partially-blind-rsa-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
+  xml2rfc 3.19.0
     Python 3.11.6
-    ConfigArgParse 1.5.3
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.1.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.8
+    wcwidth 0.2.12
 -->
 <link href="draft-amjad-cfrg-partially-blind-rsa.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1029,11 +1029,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Partially Blind RSA Signatures</td>
-<td class="right">October 2023</td>
+<td class="right">January 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Amjad, et al.</td>
-<td class="center">Expires 21 April 2024</td>
+<td class="center">Expires 14 July 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-amjad-cfrg-partially-blind-rsa-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-19" class="published">19 October 2023</time>
+<time datetime="2024-01-11" class="published">11 January 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-21">21 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-07-14">14 July 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1109,7 +1109,7 @@ It is an extension to the RSABSSA protocol recently specified by the CFRG.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1118,7 +1118,7 @@ It is an extension to the RSABSSA protocol recently specified by the CFRG.<a hre
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1177,7 +1177,7 @@ It is an extension to the RSABSSA protocol recently specified by the CFRG.<a hre
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-errors" class="internal xref">Errors</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-signing-key-generation-and-" class="internal xref">Signing Key Generation and Usage</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-signing-key-usage" class="internal xref">Signing Key Usage</a></p>
 </li>
             </ul>
 </li>
@@ -1255,7 +1255,8 @@ that have large or arbitrary amounts of metadata.<a href="#section-1-2" class="p
 <p id="section-1-3">This document specifies a variant of RSABSSA that supports public metadata, denoted
 RSAPBSSA (RSA Partially Blind Signature with Appendix). Similar to RSABSSA in
 <span>[<a href="#RSABSSA" class="cite xref">RSABSSA</a>]</span>, RSAPBSSSA is defined in such a way that the resulting (unblinded)
-signature can be verified with a standard RSA-PSS library.<a href="#section-1-3" class="pilcrow">¶</a></p>
+signature can be verified with a standard RSA-PSS library that does not impose a
+range limit on the public exponent.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1397,7 +1398,7 @@ such that p = 2p' + 1, where p' is also a prime number.<a href="#section-4.1-1" 
             <p id="section-4.1-3.1.1">sk = (n, p, q, phi, d), where phi = (p - 1)(q - 1), n = p * q, and d is the private exponent<a href="#section-4.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.1-3.2">
-            <p id="section-4.1-3.2.1">pk = (n, e), where n = p * q, and e is hte public exponent such that d * e == 1 mod phi<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-3.2.1">pk = (n, e), where n = p * q, and e is the public exponent such that d * e == 1 mod phi<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.1-4">The procedure for generating a key pair satisfying this requirement is below.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
@@ -1454,7 +1455,7 @@ blinds it with the server's public key. It outputs the blinded message to be sen
 the server, encoded as a byte string, and the corresponding inverse, an integer.
 RSAVP1 and EMSA-PSS-ENCODE are as defined in Sections <a href="https://rfc-editor.org/rfc/rfc8017#section-5.2.2" class="relref">5.2.2</a> and <a href="https://rfc-editor.org/rfc/rfc8017#section-9.1.1" class="relref">9.1.1</a> of <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>,
 respectively.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">If this function fails with an "blinding error" error, implementations <span class="bcp14">SHOULD</span> retry
+<p id="section-4.2-2">If this function fails with a "blinding error" error, implementations <span class="bcp14">SHOULD</span> retry
 the function again. The probability of one or more such errors in sequence is negligible.
 This function can also fail with an "invalid input" error, which indicates that one of
 the inputs (likely the public key) was invalid. Implementations <span class="bcp14">SHOULD</span> update the public
@@ -1490,7 +1491,7 @@ Errors:
 
 Steps:
 1. msg_prime = concat("msg", int_to_bytes(len(info), 4), info, msg)
-2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n))
+2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n) - 1)
    with Hash, MGF, and salt_len as defined in the parameters
 3. If EMSA-PSS-ENCODE raises an error, raise the error and stop
 4. m = bytes_to_int(encoded_msg)
@@ -1642,7 +1643,7 @@ with the random prefix removed.<a href="#section-4.5-3" class="pilcrow">¶</a></
 <a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-public-key-derivation" class="section-name selfRef">Public Key Derivation</a>
         </h3>
 <p id="section-4.6-1">The public key derivation function (DerivePublicKey) derives a per-metadata public
-key that is used in the core protocol. The hash function used for HKDF is that which
+key that is used in the core protocol. The hash function used for HKDF as defined in <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span> is that which
 is associated with the RSAPBSSA instance and denoted by the <code>Hash</code> parameter. Note that
 the input to HKDF is expanded to account for bias in the output distribution.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.6-2">
@@ -1650,7 +1651,7 @@ the input to HKDF is expanded to account for bias in the output distribution.<a 
 DerivePublicKey(pk, info)
 
 Parameters:
-- modulus_len, the length in bytes of the RSA modulus n
+- modulus_len, the length in bytes of the RSA modulus n. This MUST be a power of 2.
 - Hash, the hash function used to hash the message
 
 Inputs:
@@ -1725,7 +1726,7 @@ in this document. This includes error handling and API considerations.<a href="#
 <p id="section-5.1-1">The high-level functions specified in <a href="#core-protocol" class="auto internal xref">Section 4</a> are all fallible. The explicit errors
 generated throughout this specification, along with the conditions that lead to each error,
 are listed in the definitions for Blind, BlindSign, and Finalize.
-These errors are meant as a guide for implementors. They are not an exhaustive list of all
+These errors are meant as a guide for implementers. They are not an exhaustive list of all
 the errors an implementation might emit. For example, implementations might run out of memory.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Moreover, implementations can handle errors as needed or desired. Where applicable, this document
 provides guidance for how to deal with explicit errors that are generated in the protocol. For
@@ -1737,18 +1738,16 @@ exceptional event differently, e.g., by informing the server that the key has be
 </div>
 <div id="cert-oid">
 <section id="section-5.2">
-        <h3 id="name-signing-key-generation-and-">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-signing-key-generation-and-" class="section-name selfRef">Signing Key Generation and Usage</a>
+        <h3 id="name-signing-key-usage">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-signing-key-usage" class="section-name selfRef">Signing Key Usage</a>
         </h3>
-<p id="section-5.2-1">The <span class="bcp14">RECOMMENDED</span> method for generating the server signing key pair is as specified in FIPS 186-4
-<span>[<a href="#DSS" class="cite xref">DSS</a>]</span>.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">A server signing key <span class="bcp14">MUST NOT</span> be reused for any other protocol beyond RSAPBSSA. In particular,
+<p id="section-5.2-1">A server signing key <span class="bcp14">MUST NOT</span> be reused for any other protocol beyond RSAPBSSA. In particular,
 the same signing key <span class="bcp14">MUST NOT</span> be used for both the RSAPBSSA and RSABSSA protocols. Moreover, a
 server signing key <span class="bcp14">MUST NOT</span> be reused for different RSAPBSSA encoding options. That is,
 if a server supports two different encoding options, then it <span class="bcp14">MUST</span> have a distinct key
-pair for each option.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">If the server public key is carried in an X.509 certificate, it <span class="bcp14">MUST</span> use the RSASSA-PSS
-OID <span>[<a href="#RFC5756" class="cite xref">RFC5756</a>]</span>. It <span class="bcp14">MUST NOT</span> use the rsaEncryption OID <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+pair for each option.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">If the server public key is carried in an X.509 certificate, it <span class="bcp14">MUST</span> use the RSASSA-PSS
+OID <span>[<a href="#RFC5756" class="cite xref">RFC5756</a>]</span>. It <span class="bcp14">MUST NOT</span> use the rsaEncryption OID <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1761,7 +1760,7 @@ OID <span>[<a href="#RFC5756" class="cite xref">RFC5756</a>]</span>. It <span cl
 <p id="section-6-1">In this section, we define named variants of RSAPBSSA. These variants consider
 different sets of RSASSA-PSS parameters as defined in <span><a href="https://rfc-editor.org/rfc/rfc8017#section-9.1.1" class="relref">Section 9.1.1</a> of [<a href="#RFC8017" class="cite xref">RFC8017</a>]</span> and explicitly
 specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14#section-5" class="relref">Section 5</a> of [<a href="#RSABSSA" class="cite xref">RSABSSA</a>]</span>. For algorithms unique
-to RSAPBSSA, the choice of hash function specifies the instantation of HKDF in DerivePublicKey in
+to RSAPBSSA, the choice of hash function specifies the instantiation of HKDF in DerivePublicKey in
 <a href="#augment-public-key" class="auto internal xref">Section 4.6</a>. The different types of Prepare functions are specified in
 <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14#section-4.1" class="relref">Section 4.1</a> of [<a href="#RSABSSA" class="cite xref">RSABSSA</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-2">
@@ -1827,7 +1826,7 @@ difference between the Strong RSA Known Target Inversion and RSA Known Target In
 to the differences between the Strong RSA and RSA problems.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">The final property of unlinkability relies only on the fact that the underlying hash functions are modelled
 as random oracles.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">All the security considerations of RSABSSA in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14#section-8" class="relref">Section 8</a> of [<a href="#RSABSSA" class="cite xref">RSABSSA</a>]</span>
+<p id="section-7-5">All the security considerations of RSABSSA in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14#section-7" class="relref">Section 7</a> of [<a href="#RSABSSA" class="cite xref">RSABSSA</a>]</span>
 also apply to RSAPBSSA here. We present additional security considerations specific to RSAPBSSA below.<a href="#section-7-5" class="pilcrow">¶</a></p>
 <div id="strong-rsa-modulus-key-generation">
 <section id="section-7.1">
@@ -1836,7 +1835,7 @@ also apply to RSAPBSSA here. We present additional security considerations speci
         </h3>
 <p id="section-7.1-1">An essential component of RSAPBSSA is that the KeyGen algorithm in <a href="#key-generation" class="auto internal xref">Section 4.1</a> generates a RSA
 modulus that is the product of two strong primes. This is essential to ensure that the resulting outputs
-of DerivePublicKey in <a href="#augment-public-key" class="auto internal xref">Section 4.6</a> does cause errors in DeriveKeyPair in <a href="#augment-private-key" class="auto internal xref">Section 4.7</a>.
+of DerivePublicKey in <a href="#augment-public-key" class="auto internal xref">Section 4.6</a> do cause errors in DeriveKeyPair in <a href="#augment-private-key" class="auto internal xref">Section 4.7</a>.
 We note that an error in DeriveKeyPair would incur if the output of DerivePublicKey does not have an
 inverse modulo phi. By choosing the RSA modulus as the product of two strong primes, we guarantee the output of
 DerivePublicKey will never incur errors in DeriveKeyPair.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
@@ -1851,10 +1850,10 @@ of public metadata.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
         <h3 id="name-domain-separation-for-publi">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-domain-separation-for-publi" class="section-name selfRef">Domain Separation for Public Key Augmentation</a>
         </h3>
-<p id="section-7.2-1">The purpose of domain separation is to guarantee that the security analysis of any cryptographic protocol remain true
+<p id="section-7.2-1">The purpose of domain separation is to guarantee that the security analysis of any cryptographic protocol remains true
 even if multiple instances of the protocol or multiple hash functions in a single instance of the protocol
 are instantiated based on one underlying hash function.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">The DerivePublicKey in <a href="#augment-public-key" class="auto internal xref">Section 4.6</a> of this document already provide domain separation by using the RSA modulus
+<p id="section-7.2-2">The DerivePublicKey function in <a href="#augment-public-key" class="auto internal xref">Section 4.6</a> of this document already provide domain separation by using the RSA modulus
 as input to the underlying HKDF as the info argument. As each instance of RSAPBSSA will have a different RSA modulus, this
 effectively ensures that the outputs of the underlying hash functions for multiple instances will be different
 even for the same input.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
@@ -1884,7 +1883,7 @@ should be contextualized to an application's user population size.<a href="#sect
         <h3 id="name-denial-of-service">
 <a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
         </h3>
-<p id="section-7.4-1">RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
+<p id="section-7.4-1">RSAPBSSA is susceptible to Denial of Service (DoS) attacks due to the flexibility of choosing public metadata used in
 DerivePublicKey in <a href="#augment-public-key" class="auto internal xref">Section 4.6</a>. In particular, an attacker can pick public metadata such that
 the output of DerivePublicKey is very large, leading to more computational cost when verifying signatures.
 Thus, if attackers can force verification with metadata of their choosing, DoS attacks are possible.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
@@ -1921,13 +1920,21 @@ to try and mitigate DoS attacks. If the set of possible metadata choices is smal
         <dd>
 <span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Brown, D.</span>, <span class="refAuthor">Yiu, K.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">T. Polk</span>, <span class="refTitle">"Updates for RSAES-OAEP and RSASSA-PSS Algorithm Parameters"</span>, <span class="seriesInfo">RFC 5756</span>, <span class="seriesInfo">DOI 10.17487/RFC5756</span>, <time datetime="2010-01" class="refDate">January 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5756">https://www.rfc-editor.org/rfc/rfc5756</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC5869">[RFC5869]</dt>
+        <dd>
+<span class="refAuthor">Krawczyk, H.</span> and <span class="refAuthor">P. Eronen</span>, <span class="refTitle">"HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"</span>, <span class="seriesInfo">RFC 5869</span>, <span class="seriesInfo">DOI 10.17487/RFC5869</span>, <time datetime="2010-05" class="refDate">May 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5869">https://www.rfc-editor.org/rfc/rfc5869</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8017">[RFC8017]</dt>
         <dd>
 <span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8017">https://www.rfc-editor.org/rfc/rfc8017</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RSABSSA">[RSABSSA]</dt>
+      <dd>
+<span class="refAuthor">Denis, F.</span>, <span class="refAuthor">Jacobs, F.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"RSA Blind Signatures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-rsa-blind-signatures-14</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1938,21 +1945,13 @@ to try and mitigate DoS attacks. If the set of possible metadata choices is smal
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="DSS">[DSS]</dt>
-        <dd>
-<span class="refTitle">"Digital Signature Standard (DSS)"</span>, <span class="refContent">National Institute of Standards and Technology</span>, <span class="seriesInfo">DOI 10.6028/nist.fips.186-4</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://doi.org/10.6028/nist.fips.186-4">https://doi.org/10.6028/nist.fips.186-4</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="PRIVACY-PASS">[PRIVACY-PASS]</dt>
         <dd>
 <span class="refAuthor">Celi, S.</span>, <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Privacy Pass Issuance Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-16</span>, <time datetime="2023-10-03" class="refDate">3 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-16">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5280">[RFC5280]</dt>
-        <dd>
-<span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RSABSSA">[RSABSSA]</dt>
       <dd>
-<span class="refAuthor">Denis, F.</span>, <span class="refAuthor">Jacobs, F.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"RSA Blind Signatures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-rsa-blind-signatures-14</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-rsa-blind-signatures-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1971,14 +1970,14 @@ to try and mitigate DoS attacks. If the set of possible metadata choices is smal
       <h2 id="name-test-vectors">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<p id="appendix-B-1">This section includes test vectors for the RSAPBSSA-SHA384-PSS-Randomized variant defined in <a href="#core-protocol" class="auto internal xref">Section 4</a>.
+<p id="appendix-B-1">This section includes test vectors for the RSAPBSSA-SHA384-PSS-Deterministic variant defined in <a href="#core-protocol" class="auto internal xref">Section 4</a>.
 The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-2.1">
           <p id="appendix-B-2.1.1">p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.<a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-2.2">
-          <p id="appendix-B-2.2.1">msg: Input messsage being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.<a href="#appendix-B-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-2.2.1">msg: Input message being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.<a href="#appendix-B-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-2.3">
           <p id="appendix-B-2.3.1">info: Public metadata bound to the signature, encoded as a hexadecimal string.<a href="#appendix-B-2.3.1" class="pilcrow">¶</a></p>

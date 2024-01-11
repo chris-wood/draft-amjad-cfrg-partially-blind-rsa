@@ -5,11 +5,11 @@
 Network Working Group                                        G. A. Amjad
 Internet-Draft                                            S. Hendrickson
 Intended status: Informational                                    Google
-Expires: 21 April 2024                                        C. A. Wood
+Expires: 14 July 2024                                         C. A. Wood
                                                               Cloudflare
                                                             K. W. L. Yeo
                                                                   Google
-                                                         19 October 2023
+                                                         11 January 2024
 
 
                      Partially Blind RSA Signatures
@@ -47,11 +47,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2024.
+   This Internet-Draft will expire on 14 July 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -75,7 +75,7 @@ Table of Contents
      4.7.  Key Pair Derivation
    5.  Implementation and Usage Considerations
      5.1.  Errors
-     5.2.  Signing Key Generation and Usage
+     5.2.  Signing Key Usage
    6.  RSAPBSSA Variants
    7.  Security Considerations
      7.1.  Strong RSA Modulus Key Generation
@@ -118,7 +118,8 @@ Table of Contents
    metadata, denoted RSAPBSSA (RSA Partially Blind Signature with
    Appendix).  Similar to RSABSSA in [RSABSSA], RSAPBSSSA is defined in
    such a way that the resulting (unblinded) signature can be verified
-   with a standard RSA-PSS library.
+   with a standard RSA-PSS library that does not impose a range limit on
+   the public exponent.
 
 2.  Conventions and Definitions
 
@@ -242,7 +243,7 @@ Table of Contents
    *  sk = (n, p, q, phi, d), where phi = (p - 1)(q - 1), n = p * q, and
       d is the private exponent
 
-   *  pk = (n, e), where n = p * q, and e is hte public exponent such
+   *  pk = (n, e), where n = p * q, and e is the public exponent such
       that d * e == 1 mod phi
 
    The procedure for generating a key pair satisfying this requirement
@@ -294,13 +295,13 @@ Table of Contents
    EMSA-PSS-ENCODE are as defined in Sections 5.2.2 and 9.1.1 of
    [RFC8017], respectively.
 
-   If this function fails with an "blinding error" error,
-   implementations SHOULD retry the function again.  The probability of
-   one or more such errors in sequence is negligible.  This function can
-   also fail with an "invalid input" error, which indicates that one of
-   the inputs (likely the public key) was invalid.  Implementations
-   SHOULD update the public key before calling this function again.  See
-   Section 5.1 for more information about dealing with such errors.
+   If this function fails with a "blinding error" error, implementations
+   SHOULD retry the function again.  The probability of one or more such
+   errors in sequence is negligible.  This function can also fail with
+   an "invalid input" error, which indicates that one of the inputs
+   (likely the public key) was invalid.  Implementations SHOULD update
+   the public key before calling this function again.  See Section 5.1
+   for more information about dealing with such errors.
 
    Note that this function invokes RSAVP1, which is defined to throw an
    optional error for invalid inputs.  However, this error cannot occur
@@ -332,7 +333,7 @@ Errors:
 
 Steps:
 1. msg_prime = concat("msg", int_to_bytes(len(info), 4), info, msg)
-2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n))
+2. encoded_msg = EMSA-PSS-ENCODE(msg_prime, bit_len(n) - 1)
    with Hash, MGF, and salt_len as defined in the parameters
 3. If EMSA-PSS-ENCODE raises an error, raise the error and stop
 4. m = bytes_to_int(encoded_msg)
@@ -461,14 +462,15 @@ Steps:
 
    The public key derivation function (DerivePublicKey) derives a per-
    metadata public key that is used in the core protocol.  The hash
-   function used for HKDF is that which is associated with the RSAPBSSA
-   instance and denoted by the Hash parameter.  Note that the input to
-   HKDF is expanded to account for bias in the output distribution.
+   function used for HKDF as defined in [RFC5869] is that which is
+   associated with the RSAPBSSA instance and denoted by the Hash
+   parameter.  Note that the input to HKDF is expanded to account for
+   bias in the output distribution.
 
 DerivePublicKey(pk, info)
 
 Parameters:
-- modulus_len, the length in bytes of the RSA modulus n
+- modulus_len, the length in bytes of the RSA modulus n. This MUST be a power of 2.
 - Hash, the hash function used to hash the message
 
 Inputs:
@@ -528,7 +530,7 @@ Steps:
    The explicit errors generated throughout this specification, along
    with the conditions that lead to each error, are listed in the
    definitions for Blind, BlindSign, and Finalize.  These errors are
-   meant as a guide for implementors.  They are not an exhaustive list
+   meant as a guide for implementers.  They are not an exhaustive list
    of all the errors an implementation might emit.  For example,
    implementations might run out of memory.
 
@@ -542,10 +544,7 @@ Steps:
    exceptional event differently, e.g., by informing the server that the
    key has been factored.
 
-5.2.  Signing Key Generation and Usage
-
-   The RECOMMENDED method for generating the server signing key pair is
-   as specified in FIPS 186-4 [DSS].
+5.2.  Signing Key Usage
 
    A server signing key MUST NOT be reused for any other protocol beyond
    RSAPBSSA.  In particular, the same signing key MUST NOT be used for
@@ -564,7 +563,7 @@ Steps:
    variants consider different sets of RSASSA-PSS parameters as defined
    in Section 9.1.1 of [RFC8017] and explicitly specified in Section 5
    of [RSABSSA].  For algorithms unique to RSAPBSSA, the choice of hash
-   function specifies the instantation of HKDF in DerivePublicKey in
+   function specifies the instantiation of HKDF in DerivePublicKey in
    Section 4.6.  The different types of Prepare functions are specified
    in Section 4.1 of [RSABSSA].
 
@@ -634,7 +633,7 @@ Steps:
    The final property of unlinkability relies only on the fact that the
    underlying hash functions are modelled as random oracles.
 
-   All the security considerations of RSABSSA in Section 8 of [RSABSSA]
+   All the security considerations of RSABSSA in Section 7 of [RSABSSA]
    also apply to RSAPBSSA here.  We present additional security
    considerations specific to RSAPBSSA below.
 
@@ -643,7 +642,7 @@ Steps:
    An essential component of RSAPBSSA is that the KeyGen algorithm in
    Section 4.1 generates a RSA modulus that is the product of two strong
    primes.  This is essential to ensure that the resulting outputs of
-   DerivePublicKey in Section 4.6 does cause errors in DeriveKeyPair in
+   DerivePublicKey in Section 4.6 do cause errors in DeriveKeyPair in
    Section 4.7.  We note that an error in DeriveKeyPair would incur if
    the output of DerivePublicKey does not have an inverse modulo phi.
    By choosing the RSA modulus as the product of two strong primes, we
@@ -660,17 +659,17 @@ Steps:
 7.2.  Domain Separation for Public Key Augmentation
 
    The purpose of domain separation is to guarantee that the security
-   analysis of any cryptographic protocol remain true even if multiple
+   analysis of any cryptographic protocol remains true even if multiple
    instances of the protocol or multiple hash functions in a single
    instance of the protocol are instantiated based on one underlying
    hash function.
 
-   The DerivePublicKey in Section 4.6 of this document already provide
-   domain separation by using the RSA modulus as input to the underlying
-   HKDF as the info argument.  As each instance of RSAPBSSA will have a
-   different RSA modulus, this effectively ensures that the outputs of
-   the underlying hash functions for multiple instances will be
-   different even for the same input.
+   The DerivePublicKey function in Section 4.6 of this document already
+   provide domain separation by using the RSA modulus as input to the
+   underlying HKDF as the info argument.  As each instance of RSAPBSSA
+   will have a different RSA modulus, this effectively ensures that the
+   outputs of the underlying hash functions for multiple instances will
+   be different even for the same input.
 
    Additionally, the hash function invocation used for computing the
    message digest is domain separated from the hash function invocation
@@ -699,7 +698,7 @@ Steps:
 
 7.4.  Denial of Service
 
-   RSAPBSSA is suspectible to Denial of Service (DoS) attacks due to the
+   RSAPBSSA is susceptible to Denial of Service (DoS) attacks due to the
    flexibility of choosing public metadata used in DerivePublicKey in
    Section 4.6.  In particular, an attacker can pick public metadata
    such that the output of DerivePublicKey is very large, leading to
@@ -731,6 +730,11 @@ Steps:
               Parameters", RFC 5756, DOI 10.17487/RFC5756, January 2010,
               <https://www.rfc-editor.org/rfc/rfc5756>.
 
+   [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
+              Key Derivation Function (HKDF)", RFC 5869,
+              DOI 10.17487/RFC5869, May 2010,
+              <https://www.rfc-editor.org/rfc/rfc5869>.
+
    [RFC8017]  Moriarty, K., Ed., Kaliski, B., Jonsson, J., and A. Rusch,
               "PKCS #1: RSA Cryptography Specifications Version 2.2",
               RFC 8017, DOI 10.17487/RFC8017, November 2016,
@@ -740,11 +744,13 @@ Steps:
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-9.2.  Informative References
+   [RSABSSA]  Denis, F., Jacobs, F., and C. A. Wood, "RSA Blind
+              Signatures", Work in Progress, Internet-Draft, draft-irtf-
+              cfrg-rsa-blind-signatures-14, 10 July 2023,
+              <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
+              rsa-blind-signatures-14>.
 
-   [DSS]      "Digital Signature Standard (DSS)", National Institute of
-              Standards and Technology, DOI 10.6028/nist.fips.186-4,
-              July 2013, <https://doi.org/10.6028/nist.fips.186-4>.
+9.2.  Informative References
 
    [PRIVACY-PASS]
               Celi, S., Davidson, A., Valdez, S., and C. A. Wood,
@@ -759,12 +765,6 @@ Steps:
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/rfc/rfc5280>.
 
-   [RSABSSA]  Denis, F., Jacobs, F., and C. A. Wood, "RSA Blind
-              Signatures", Work in Progress, Internet-Draft, draft-irtf-
-              cfrg-rsa-blind-signatures-14, 10 July 2023,
-              <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              rsa-blind-signatures-14>.
-
 Appendix A.  Acknowledgments
 
    The authors would like to thank Nikita Borisov for pointing out an
@@ -773,14 +773,14 @@ Appendix A.  Acknowledgments
 Appendix B.  Test Vectors
 
    This section includes test vectors for the RSAPBSSA-SHA384-PSS-
-   Randomized variant defined in Section 4.  The following parameters
+   Deterministic variant defined in Section 4.  The following parameters
    are specified for each test vector, where each hexidecimal value uses
    an unsigned big-endian convention:
 
    *  p, q, d, e, N: RSA private and public key parameters, each encoded
       as a hexadecimal string.
 
-   *  msg: Input messsage being signed, encoded as a hexadecimal string.
+   *  msg: Input message being signed, encoded as a hexadecimal string.
       The hash is computed using SHA-384.
 
    *  info: Public metadata bound to the signature, encoded as a
