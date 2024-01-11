@@ -1083,7 +1083,7 @@ Authors' Addresses
 
    Ghous A. Amjad
    Google
-   Email: ghous_amjad@alumni.brown.edu
+   Email: gamjad@google.com
 
 
    Scott Hendrickson
