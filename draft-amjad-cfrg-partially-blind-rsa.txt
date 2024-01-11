@@ -5,11 +5,11 @@
 Network Working Group                                        G. A. Amjad
 Internet-Draft                                            S. Hendrickson
 Intended status: Informational                                    Google
-Expires: 29 April 2024                                        C. A. Wood
+Expires: 14 July 2024                                         C. A. Wood
                                                               Cloudflare
                                                             K. W. L. Yeo
                                                                   Google
-                                                         27 October 2023
+                                                         11 January 2024
 
 
                      Partially Blind RSA Signatures
@@ -47,11 +47,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 April 2024.
+   This Internet-Draft will expire on 14 July 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1083,7 +1083,7 @@ Authors' Addresses
 
    Ghous A. Amjad
    Google
-   Email: ghous_amjad@alumni.brown.edu
+   Email: gamjad@google.com
 
 
    Scott Hendrickson
