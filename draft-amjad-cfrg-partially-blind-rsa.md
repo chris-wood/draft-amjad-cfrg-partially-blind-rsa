@@ -15,7 +15,7 @@ author:
  -  ins: G. A. Amjad
     name: Ghous A. Amjad
     organization: Google
-    email: "ghous_amjad@alumni.brown.edu"
+    email: "gamjad@google.com"
  -  ins: S. Hendrickson
     name: Scott Hendrickson
     organization: Google
