@@ -79,6 +79,7 @@ range limit on the public exponent.
 The following terms are used throughout this document to describe the protocol operations
 in this document:
 
+- "string" can be interpreted as a byte string with ASCII encoding of its individual character. "hello" is [ '0x68', '0x65', '0x6C', '0x6C', '0x6F' ].
 - bytes_to_int and int_to_bytes: Convert a byte string to and from a non-negative integer.
   bytes_to_int and int_to_bytes are implemented as OS2IP and I2OSP as described in
   {{!RFC8017}}, respectively. Note that these functions operate on byte strings
@@ -400,7 +401,7 @@ Parameters:
 - Hash, the hash function used to hash the message
 
 Inputs:
-- pk, public key (n, e)
+- pk, public key (n)
 - info, public metadata, a byte string
 
 Outputs:
@@ -414,7 +415,7 @@ Steps:
 5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_salt, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
-8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
+8. e' = bytes_to_int(slice(expanded_bytes, 0, lambda_len))
 9. output pk_derived = (n, e')
 ~~~
 
