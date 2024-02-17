@@ -22,14 +22,14 @@ ordered_keys = [
     "q", 
     "d", 
     "e",
-    "N",
+    "n",
     "msg", 
     "info", 
     "eprime", 
-    "blind",
+    "r",
     "salt", 
-    "blinded_msg", 
-    "blinded_sig", 
+    "blind_msg", 
+    "blind_sig", 
     "sig",
 ]
 format_vector(ordered_keys, sys.argv[1])
