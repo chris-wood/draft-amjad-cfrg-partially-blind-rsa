@@ -79,6 +79,7 @@ range limit on the public exponent.
 The following terms are used throughout this document to describe the protocol operations
 in this document:
 
+- "string" can be interpreted as a byte string with ASCII encoding of its individual character. "hello" is [ '0x68', '0x65', '0x6C', '0x6C', '0x6F' ].
 - bytes_to_int and int_to_bytes: Convert a byte string to and from a non-negative integer.
   bytes_to_int and int_to_bytes are implemented as OS2IP and I2OSP as described in
   {{!RFC8017}}, respectively. Note that these functions operate on byte strings
@@ -400,7 +401,7 @@ Parameters:
 - Hash, the hash function used to hash the message
 
 Inputs:
-- pk, public key (n, e)
+- pk, public key (n)
 - info, public metadata, a byte string
 
 Outputs:
@@ -414,7 +415,7 @@ Steps:
 5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_salt, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
-8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
+8. e' = bytes_to_int(slice(expanded_bytes, 0, lambda_len))
 9. output pk_derived = (n, e')
 ~~~
 
@@ -605,7 +606,7 @@ The authors would like to thank Nikita Borisov for pointing out an issue with a 
 This section includes test vectors for the RSAPBSSA-SHA384-PSS-Deterministic variant defined in {{core-protocol}}.
 The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:
 
-- p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.
+- p, q, d, e, n: RSA private and public key parameters, each encoded as a hexadecimal string.
 - msg: Input message being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.
 - info: Public metadata bound to the signature, encoded as a hexadecimal string.
 - eprime: The augmented public key exponent corresponding to e and metadata, encoded as a hexadecimal string.
@@ -634,7 +635,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -704,7 +705,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -774,7 +775,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -844,7 +845,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
