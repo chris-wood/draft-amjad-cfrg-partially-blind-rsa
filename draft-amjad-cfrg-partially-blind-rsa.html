@@ -13,24 +13,24 @@
        This document specifies a blind RSA signature protocol that supports public metadata.
 It is an extension to the RSABSSA protocol recently specified by the CFRG. 
     " name="description">
-<meta content="xml2rfc 3.19.0" name="generator">
+<meta content="xml2rfc 3.20.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-amjad-cfrg-partially-blind-rsa-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.0
-    Python 3.11.6
+  xml2rfc 3.20.0
+    Python 3.11.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.1.0
+    platformdirs 4.2.0
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
     setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.12
+    wcwidth 0.2.13
 -->
 <link href="draft-amjad-cfrg-partially-blind-rsa.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1029,11 +1029,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Partially Blind RSA Signatures</td>
-<td class="right">January 2024</td>
+<td class="right">March 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Amjad, et al.</td>
-<td class="center">Expires 14 July 2024</td>
+<td class="center">Expires 7 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-amjad-cfrg-partially-blind-rsa-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-11" class="published">11 January 2024</time>
+<time datetime="2024-03-06" class="published">6 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-14">14 July 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-07">7 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1109,7 +1109,7 @@ It is an extension to the RSABSSA protocol recently specified by the CFRG.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1279,43 +1279,46 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 in this document:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-2.1">
-          <p id="section-3-2.1.1">bytes_to_int and int_to_bytes: Convert a byte string to and from a non-negative integer.
-bytes_to_int and int_to_bytes are implemented as OS2IP and I2OSP as described in
-<span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>, respectively. Note that these functions operate on byte strings
-in big-endian byte order.<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.1.1">"string" can be interpreted as a byte string with ASCII encoding of its individual character. "hello" is [ '0x68', '0x65', '0x6C', '0x6C', '0x6F' ].<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.2">
-          <p id="section-3-2.2.1">random_integer_uniform(M, N): Generate a random, uniformly distributed integer R
-between M inclusive and N exclusive, i.e., M &lt;= R &lt; N.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.2.1">bytes_to_int and int_to_bytes: Convert a byte string to and from a non-negative integer.
+bytes_to_int and int_to_bytes are implemented as OS2IP and I2OSP as described in
+<span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>, respectively. Note that these functions operate on byte strings
+in big-endian byte order.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.3">
-          <p id="section-3-2.3.1">bit_len(n): Compute the minimum number of bits needed to represent the positive integer n.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.3.1">random_integer_uniform(M, N): Generate a random, uniformly distributed integer R
+between M inclusive and N exclusive, i.e., M &lt;= R &lt; N.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.4">
-          <p id="section-3-2.4.1">inverse_mod(x, n): Compute the multiplicative inverse of x mod n or fail if x and n are not co-prime.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.4.1">bit_len(n): Compute the minimum number of bits needed to represent the positive integer n.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.5">
-          <p id="section-3-2.5.1">is_coprime(x, n): Return true if x and n are co-prime, and false otherwise.<a href="#section-3-2.5.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.5.1">inverse_mod(x, n): Compute the multiplicative inverse of x mod n or fail if x and n are not co-prime.<a href="#section-3-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.6">
-          <p id="section-3-2.6.1">len(s): The length of a byte string, in bytes.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.6.1">is_coprime(x, n): Return true if x and n are co-prime, and false otherwise.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.7">
-          <p id="section-3-2.7.1">random(n): Generate n random bytes using a cryptographically-secure random number generator.<a href="#section-3-2.7.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.7.1">len(s): The length of a byte string, in bytes.<a href="#section-3-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.8">
-          <p id="section-3-2.8.1">concat(x0, ..., xN): Concatenation of byte strings. For example,
-concat(0x01, 0x0203, 0x040506) = 0x010203040506.<a href="#section-3-2.8.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.8.1">random(n): Generate n random bytes using a cryptographically-secure random number generator.<a href="#section-3-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.9">
-          <p id="section-3-2.9.1">slice(x, i, j): Return bytes in the byte string <code>x</code> starting from offset <code>i</code> and ending at
-offset <code>j</code>, inclusive. For example, slice(0x010203040506, 1, 5) = 0x0203040506.<a href="#section-3-2.9.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.9.1">concat(x0, ..., xN): Concatenation of byte strings. For example,
+concat(0x01, 0x0203, 0x040506) = 0x010203040506.<a href="#section-3-2.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.10">
-          <p id="section-3-2.10.1">random_prime(b): Return a random prime number of length b bits.<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.10.1">slice(x, i, j): Return bytes in the byte string <code>x</code> starting from offset <code>i</code> and ending at
+offset <code>j</code>, inclusive. For example, slice(0x010203040506, 1, 5) = 0x0203040506.<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.11">
-          <p id="section-3-2.11.1">is_prime(p): Return true if the input integer p is prime, and false otherwise.<a href="#section-3-2.11.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.11.1">random_prime(b): Return a random prime number of length b bits.<a href="#section-3-2.11.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-2.12">
+          <p id="section-3-2.12.1">is_prime(p): Return true if the input integer p is prime, and false otherwise.<a href="#section-3-2.12.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1655,7 +1658,7 @@ Parameters:
 - Hash, the hash function used to hash the message
 
 Inputs:
-- pk, public key (n, e)
+- pk, public key (n)
 - info, public metadata, a byte string
 
 Outputs:
@@ -1669,7 +1672,7 @@ Steps:
 5. expanded_bytes = HKDF(IKM=hkdf_input, salt=hkdf_salt, info="PBRSA", L=hkdf_len)
 6. expanded_bytes[0] &amp;= 0x3F // Clear two-most top bits
 7. expanded_bytes[lambda_len-1] |= 0x01 // Set bottom-most bit
-8. e' = bytes_to_int(slice(expanded_bytes, lambda_len))
+8. e' = bytes_to_int(slice(expanded_bytes, 0, lambda_len))
 9. output pk_derived = (n, e')
 </pre><a href="#section-4.6-2" class="pilcrow">¶</a>
 </div>
@@ -1974,7 +1977,7 @@ to try and mitigate DoS attacks. If the set of possible metadata choices is smal
 The following parameters are specified for each test vector, where each hexidecimal value uses an unsigned big-endian convention:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-2.1">
-          <p id="appendix-B-2.1.1">p, q, d, e, N: RSA private and public key parameters, each encoded as a hexadecimal string.<a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-2.1.1">p, q, d, e, n: RSA private and public key parameters, each encoded as a hexadecimal string.<a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-2.2">
           <p id="appendix-B-2.2.1">msg: Input message being signed, encoded as a hexadecimal string. The hash is computed using SHA-384.<a href="#appendix-B-2.2.1" class="pilcrow">¶</a></p>
@@ -2019,7 +2022,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -2089,7 +2092,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -2159,7 +2162,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
@@ -2229,7 +2232,7 @@ ce96ab373d2689baeaea0e28ea7d45f2d605451920ca4ea1f0c08b0f1f6711eaa
 8d38a93189258aa346bf2bc572cd7e7359605c20221b8909d599ed9d38164c9c4
 abf396f897b9993c1e805e574d704649985b600fa0ced8e5427071d7049d
 e: 010001
-N: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
+n: d6930820f71fe517bf3259d14d40209b02a5c0d3d61991c731dd7da39f8d69
 821552e2318d6c9ad897e603887a476ea3162c1205da9ac96f02edf31df049bd5
 5f142134c17d4382a0e78e275345f165fbe8e49cdca6cf5c726c599dd39e09e75
 e0f330a33121e73976e4facba9cfa001c28b7c96f8134f9981db6750b43a41710
