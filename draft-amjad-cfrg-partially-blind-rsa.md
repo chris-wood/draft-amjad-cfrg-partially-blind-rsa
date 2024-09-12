@@ -32,6 +32,12 @@ author:
 normative:
 
 informative:
+   PRIMEGEN:
+      title: "BN_generate_prime_ex"
+      target: https://www.openssl.org/docs/manmaster/man3/BN_generate_prime_ex.html
+      author:
+         - ins: OpenSSL
+           org: OpenSSL
 
 
 --- abstract
@@ -95,8 +101,8 @@ in this document:
   concat(0x01, 0x0203, 0x040506) = 0x010203040506.
 - slice(x, i, j): Return bytes in the byte string `x` starting from offset `i` and ending at
   offset `j`, inclusive. For example, slice(0x010203040506, 1, 5) = 0x0203040506.
-- random_prime(b): Return a random prime number of length b bits.
-- is_prime(p): Return true if the input integer p is prime, and false otherwise.
+- random_prime(b): Return a random prime number of length b bits. See {{prime-context}} for more information about this function.
+- is_prime(p): Return true if the input integer p is prime, and false otherwise. See {{prime-context}} for more information about this function.
 
 # RSAPBSSA Protocol {#core-protocol}
 
@@ -897,3 +903,7 @@ sig: b7d45ec4db11f9b74a6b33806e486f7ee5f87c4fa7c57d08caf0ca6d3ba5
 246ae83923d749117b7ec1b4478ee15f990dc200745a45f175d23c8a13d2dbe58
 b1f9d10db71917708b19eeeab230fe6026c249342216ee785d9422c3a8dc89
 ~~~
+
+# Primes and Primality Tests {#prime-context}
+The functions random_prime and is_prime likely use probabilistic primality tests internally. However standard implementations (for example {{PRIMEGEN}}) for probabilistic prime generation return non-primes with negligible probability and are deemed to be good enough for key generation purposes.
+
