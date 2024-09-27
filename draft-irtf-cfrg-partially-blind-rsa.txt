@@ -5,15 +5,15 @@
 Network Working Group                                        G. A. Amjad
 Internet-Draft                                            S. Hendrickson
 Intended status: Informational                                    Google
-Expires: 7 September 2024                                     C. A. Wood
+Expires: 31 March 2025                                        C. A. Wood
                                                               Cloudflare
                                                             K. W. L. Yeo
                                                                   Google
-                                                            6 March 2024
+                                                       27 September 2024
 
 
                      Partially Blind RSA Signatures
-              draft-amjad-cfrg-partially-blind-rsa-latest
+               draft-irtf-cfrg-partially-blind-rsa-latest
 
 Abstract
 
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 September 2024.
+   This Internet-Draft will expire on 31 March 2025.
 
 Copyright Notice
 
