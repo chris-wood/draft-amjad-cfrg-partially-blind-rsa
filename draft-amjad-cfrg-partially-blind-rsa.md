@@ -198,7 +198,7 @@ Steps:
 9. output (sk, pk)
 ~~~
 
-The procedure for generating a safe prime, denoted SafePrime, is below.
+The procedure for generating a safe prime, denoted SafePrime, is below. Note that SafePrime(bits) outputs a prime >  2^(bits-0.5), which guarantees that KeyGen always outputs a modulus of correct size.
 
 ~~~
 SafePrime(bits)
@@ -207,13 +207,16 @@ Inputs:
 - bits, length in bits of the safe prime
 
 Outputs:
-- p, a safe prime integer
+- p, a safe prime integer > 2^(bits-0.5)
 
 Steps:
 1. p' = random_prime(bits - 1)
-2. p = (2 * p') + 1
-3. if is_prime(p) is True, output p, else go to step 1.
+2. if p' <= ( 2^(bits-0.5) - 1 ) / 2, go to step 1.
+3. p = (2 * p') + 1
+4. if is_prime(p) is True, output p, else go to step 1.
 ~~~
+
+Note that SafePrime(bits) as described above can be very slow depending on the value of bits. A much faster method would check if p' is large enough, then run a fast primality test (such as trial divisions) on both p' and p and only then run an expensive primality test (such as Miller-Rabin) on both values to confirm primality with high probability.
 
 ## Blind {#blind}
 
