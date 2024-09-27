@@ -13,7 +13,7 @@ Expires: 31 March 2025                                        C. A. Wood
 
 
                      Partially Blind RSA Signatures
-              draft-amjad-cfrg-partially-blind-rsa-latest
+               draft-irtf-cfrg-partially-blind-rsa-latest
 
 Abstract
 
