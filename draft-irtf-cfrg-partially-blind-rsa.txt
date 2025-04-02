@@ -5,11 +5,11 @@
 Network Working Group                                        G. A. Amjad
 Internet-Draft                                            S. Hendrickson
 Intended status: Informational                                    Google
-Expires: 31 March 2025                                        C. A. Wood
+Expires: 4 October 2025                                       C. A. Wood
                                                               Cloudflare
                                                             K. W. L. Yeo
                                                                   Google
-                                                       27 September 2024
+                                                            2 April 2025
 
 
                      Partially Blind RSA Signatures
@@ -47,11 +47,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 March 2025.
+   This Internet-Draft will expire on 4 October 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
