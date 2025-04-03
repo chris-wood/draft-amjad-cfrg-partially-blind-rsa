@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-03-16T00:20:27.223742+00:00",
+  "timestamp": "2025-04-03T00:07:46.274854+00:00",
   "repo": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
   "labels": [
     {
@@ -314,16 +314,26 @@
       "id": "I_kwDOJAmlvM5g8Fwl",
       "title": "Mind your ps and qs",
       "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/issues/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "Guss123"
+      ],
       "labels": [],
       "body": "> a key pair MUST be the product of two safe primes p and q. A safe prime p is a prime number such that p = 2q + 1, where q is also a prime number\r\n\r\nA lazy reader might infer that the values in the key pair have the relationship p=2q+1.  Consider using different labels for the definitional part to avoid this confusion.",
       "createdAt": "2023-03-15T22:18:33Z",
-      "updatedAt": "2023-03-15T22:18:33Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2023-08-10T19:43:38Z",
+      "closedAt": "2023-08-10T19:43:38Z",
+      "comments": [
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Oops did not get this reviewed by mistake but fixed the issue. Closing it now. Please re-open if needed.",
+          "createdAt": "2023-08-10T19:43:38Z",
+          "updatedAt": "2023-08-10T19:43:38Z"
+        }
+      ]
     },
     {
       "number": 24,
@@ -333,12 +343,54 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "Guss123"
+      ],
       "labels": [],
       "body": "...or overflow the page.  See https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.2-4\r\n\r\nConsider avoiding the use of `<artwork>` and instead use lists so that the styling can be taken care of for you.",
       "createdAt": "2023-03-15T22:21:29Z",
-      "updatedAt": "2023-03-15T22:21:29Z",
+      "updatedAt": "2023-08-10T19:44:32Z",
       "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 25,
+      "id": "I_kwDOJAmlvM5oVNHb",
+      "title": "Should Finalize output msg_prime?",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/issues/25",
+      "state": "OPEN",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When writing a Token Verification procedure Ghous and I noted that an implementer must create the authenticator input exactly as described by the `msg_prime` creation:\r\n\r\n```\r\n1. msg_prime = concat(\"msg\", int_to_bytes(len(metadata), 4), metadata, msg)\r\n``` \r\n\r\nFor example, this is an excerpt from [public metadata issuance](https://smhendrickson.github.io/draft-hendrickson-privacypass-public-metadata-issuance/draft-hendrickson-privacypass-public-metadata.html#name-token-verification):\r\n\r\n```\r\ntoken_authenticator_input =  concat(\"msg\",\r\n    int_to_bytes(len(Token.metadata), 4),\r\n    Token.metadata,\r\n    token_input)\r\nvalid = RSASSA-PSS-VERIFY(pkM,\r\n                          token_authenticator_input,\r\n                          Token.authenticator)\r\n```\r\n\r\nShould we instead have the Finalize method output `msg_prime` so it can be forwarded directly to the Verifier without reconstruction?\r\n",
+      "createdAt": "2023-06-09T19:19:19Z",
+      "updatedAt": "2023-06-21T11:32:01Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "This is a good idea. In the RSABSSA spec, the protocol outputs the \"prepared message\" (the thing signed) as well as the signature. We should do the same thing here. I don't think it needs to be an explicit output of `Finalize`, but rather something that client implementations can choose to provide to callers as needed. ",
+          "createdAt": "2023-06-21T11:32:01Z",
+          "updatedAt": "2023-06-21T11:32:01Z"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "I_kwDOJAmlvM5pWCuU",
+      "title": "Use `info` instead of `metadata`",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/issues/27",
+      "state": "CLOSED",
+      "author": "chris-wood",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The [POPRF spec](https://cfrg.github.io/draft-irtf-cfrg-voprf/draft-irtf-cfrg-voprf.html) uses the term `info` as the public value for the POPRF. I suggest we reuse `info` here for consistency.",
+      "createdAt": "2023-06-21T11:33:19Z",
+      "updatedAt": "2023-07-06T19:07:56Z",
+      "closedAt": "2023-07-06T19:07:56Z",
       "comments": []
     }
   ],
@@ -865,7 +917,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-03-08T16:49:34Z",
-      "updatedAt": "2023-03-08T17:05:00Z",
+      "updatedAt": "2023-08-10T21:58:54Z",
       "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
       "baseRefName": "main",
       "baseRefOid": "d1f62dd7911fb1ebafc69cee4a94b613fab372a2",
@@ -1010,6 +1062,1153 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDOJAmlvM5TXGyQ",
+      "title": "Remove DoS attack mitigation and add ack.",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/26",
+      "state": "MERGED",
+      "author": "kwlyeo",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-06-19T17:12:45Z",
+      "updatedAt": "2023-06-21T19:44:52Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "aad135128e7b14f53720ef58a41167a026e46e1d",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "kwlyeo-patch-1",
+      "headRefOid": "b390b682e8a4e954f6df040a9364d5fde7341bc2",
+      "closedAt": "2023-06-21T19:44:47Z",
+      "mergedAt": "2023-06-21T19:44:47Z",
+      "mergedBy": "kwlyeo",
+      "mergeCommit": {
+        "oid": "94c2c9098fb0d6b6e4c74c15d3d2469285c3a897"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5YoHZz",
+          "commit": {
+            "abbreviatedOid": "2798025"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-19T20:49:07Z",
+          "updatedAt": "2023-06-19T20:49:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5YoHcD",
+          "commit": {
+            "abbreviatedOid": "2798025"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-19T20:49:19Z",
+          "updatedAt": "2023-06-19T20:49:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5Y1wCZ",
+          "commit": {
+            "abbreviatedOid": "2798025"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-06-21T11:29:15Z",
+          "updatedAt": "2023-06-21T11:29:24Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I think we should keep this advice. There's no strong reason to use this variant if there's few metadata choices.",
+              "createdAt": "2023-06-21T11:29:15Z",
+              "updatedAt": "2023-06-21T11:29:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5Y3Dxb",
+          "commit": {
+            "abbreviatedOid": "2798025"
+          },
+          "author": "kwlyeo",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-21T14:00:57Z",
+          "updatedAt": "2023-06-21T14:00:57Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Good catch. Added it back.",
+              "createdAt": "2023-06-21T14:00:57Z",
+              "updatedAt": "2023-06-21T14:00:57Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOJAmlvM5T7bgd",
+      "title": "Augment to Derive, dropping exponentiation",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/28",
+      "state": "MERGED",
+      "author": "chris-wood",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Also, use \"info\" consistently as the public metadata parameter name to align the POPRF terminology from draft-irtf-cfrg-voprf.",
+      "createdAt": "2023-06-26T14:28:30Z",
+      "updatedAt": "2023-06-27T18:48:33Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "94c2c9098fb0d6b6e4c74c15d3d2469285c3a897",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "caw/drop-exponentiation",
+      "headRefOid": "1ab5f07b2f7d900aa5931fd8169e51aeefe3faf5",
+      "closedAt": "2023-06-27T18:48:31Z",
+      "mergedAt": "2023-06-27T18:48:31Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "fada8673f5bb17f003513bdded75a4a82c76ff4e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5ZVW_5",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "kwlyeo",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-06-26T15:04:50Z",
+          "updatedAt": "2023-06-26T15:11:36Z",
+          "comments": [
+            {
+              "originalPosition": 116,
+              "body": "I think we can drop e and d from here.",
+              "createdAt": "2023-06-26T15:04:50Z",
+              "updatedAt": "2023-06-26T15:11:36Z"
+            },
+            {
+              "originalPosition": 101,
+              "body": "Can remove e and d as follows:\r\n\r\nsk = (p, q, phi)\r\npk = n",
+              "createdAt": "2023-06-26T15:09:20Z",
+              "updatedAt": "2023-06-26T15:11:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZV4cA",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-26T16:07:35Z",
+          "updatedAt": "2023-06-26T16:07:36Z",
+          "comments": [
+            {
+              "originalPosition": 101,
+              "body": "Why would we remove `e` and `d`?",
+              "createdAt": "2023-06-26T16:07:35Z",
+              "updatedAt": "2023-06-26T16:07:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZV7Us",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "kwlyeo",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-26T16:14:21Z",
+          "updatedAt": "2023-06-26T16:14:21Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZWuNP",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-26T18:15:03Z",
+          "updatedAt": "2023-06-26T18:17:42Z",
+          "comments": [
+            {
+              "originalPosition": 325,
+              "body": "This will take n aka modulus as input. Some calls are passing pk to it and some aren't. All calls need to be corrected to pass modulus to DerivePublicKey. ",
+              "createdAt": "2023-06-26T18:15:04Z",
+              "updatedAt": "2023-06-26T18:17:42Z"
+            },
+            {
+              "originalPosition": 101,
+              "body": "Because e & d are not used anywhere anymore. Before we would use e & d in the augment functions. However, in the new Derive* functions, they are not needed. The public key one would only need modulus n whereas the secret key one would need p, q, phi.",
+              "createdAt": "2023-06-26T18:17:04Z",
+              "updatedAt": "2023-06-26T18:17:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZXPsD",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-26T19:28:40Z",
+          "updatedAt": "2023-06-26T19:28:40Z",
+          "comments": [
+            {
+              "originalPosition": 325,
+              "body": "Ah, yes, good catch! I'll add `pk` back to the list of parameters, since that's what has `n`.",
+              "createdAt": "2023-06-26T19:28:40Z",
+              "updatedAt": "2023-06-26T19:28:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZXP8R",
+          "commit": {
+            "abbreviatedOid": "78773ab"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-26T19:29:22Z",
+          "updatedAt": "2023-06-26T19:29:22Z",
+          "comments": [
+            {
+              "originalPosition": 101,
+              "body": "Let's address this in a separate change.",
+              "createdAt": "2023-06-26T19:29:22Z",
+              "updatedAt": "2023-06-26T19:29:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5ZgQPE",
+          "commit": {
+            "abbreviatedOid": "1ab5f07"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-06-27T18:44:00Z",
+          "updatedAt": "2023-06-27T18:44:00Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOJAmlvM5UzOC8",
+      "title": "Update test vectors",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/29",
+      "state": "MERGED",
+      "author": "chris-wood",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-06T11:22:11Z",
+      "updatedAt": "2023-07-06T19:07:51Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "fada8673f5bb17f003513bdded75a4a82c76ff4e",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "caw/update-vectors",
+      "headRefOid": "9eceffd40d1f77f8860238cc8cd562d8ca68464c",
+      "closedAt": "2023-07-06T19:07:51Z",
+      "mergedAt": "2023-07-06T19:07:51Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "57ed9cf17c0480edd8d8a1076d7275a647a22793"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5abbeb",
+          "commit": {
+            "abbreviatedOid": "9eceffd"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-07-06T18:59:48Z",
+          "updatedAt": "2023-07-06T18:59:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDOJAmlvM5XrEoR",
+      "title": "Algorithms scroll horizontally",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/30",
+      "state": "CLOSED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #24",
+      "createdAt": "2023-08-10T19:59:22Z",
+      "updatedAt": "2023-08-10T20:04:51Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "b4b6ffb6499c553c2061da3ba833dbce69d168dc",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "Guss123/issue24",
+      "headRefOid": "0534f96a3865c91baf78bee25de20248271935eb",
+      "closedAt": "2023-08-10T20:04:40Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDOJAmlvM5XraEj",
+      "title": "testing code block wrapping",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/31",
+      "state": "CLOSED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-10T21:16:54Z",
+      "updatedAt": "2023-08-10T21:41:17Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "ea68bf09f5ba5c785149edfba8c4d29e773df425",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "testing-code-wrap",
+      "headRefOid": "d5138004bc57f0dd5ef6a7156afebce791a7c880",
+      "closedAt": "2023-08-10T21:41:17Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 32,
+      "id": "PR_kwDOJAmlvM5XrjMY",
+      "title": "test1",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/32",
+      "state": "CLOSED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-10T22:03:01Z",
+      "updatedAt": "2023-08-10T22:08:11Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "ea68bf09f5ba5c785149edfba8c4d29e773df425",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "code-no-scroll",
+      "headRefOid": "cd2cf12152f00d26d1ac64fc072464dfe383ba70",
+      "closedAt": "2023-08-10T22:08:11Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOJAmlvM5cgh8L",
+      "title": "Fix typographic errors",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/33",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-11T12:28:37Z",
+      "updatedAt": "2023-10-11T12:57:41Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "ea68bf09f5ba5c785149edfba8c4d29e773df425",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits",
+      "headRefOid": "71d25a5625d72583165386bc68bb24b666727293",
+      "closedAt": "2023-10-11T12:57:41Z",
+      "mergedAt": "2023-10-11T12:57:41Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "6754b005e538b5091c47ce40c4e26bedbbd1c907"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5jm3S-",
+          "commit": {
+            "abbreviatedOid": "71d25a5"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-11T12:57:37Z",
+          "updatedAt": "2023-10-11T12:57:37Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOJAmlvM5dNPAb",
+      "title": "EMSA-PSS-ENCODE using bit_len(n) - 1",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/34",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "EMSA-PSS-ENCODE using bit_len(n) - 1\n\nThis ensures that the verification as defined in https://www.rfc-editor.org/rfc/rfc8017#section-8.1.2 matches, in case a verifier is using a standard   RSASSA-PSS-VERIFY implementation.",
+      "createdAt": "2023-10-19T00:39:04Z",
+      "updatedAt": "2023-10-19T00:41:06Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "6754b005e538b5091c47ce40c4e26bedbbd1c907",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits",
+      "headRefOid": "7ed9aba15ee064bb5074577b9d307148be6a5f76",
+      "closedAt": "2023-10-19T00:41:06Z",
+      "mergedAt": "2023-10-19T00:41:06Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "d85760dcf994efc2403530932c8b385668fe3c87"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5khUw_",
+          "commit": {
+            "abbreviatedOid": "7ed9aba"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T00:40:59Z",
+          "updatedAt": "2023-10-19T00:40:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOJAmlvM5dNR09",
+      "title": "modulus_len must be a power of 2",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/35",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "To better align with the paper and implementation.",
+      "createdAt": "2023-10-19T00:50:28Z",
+      "updatedAt": "2023-10-19T00:52:25Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "d85760dcf994efc2403530932c8b385668fe3c87",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits2",
+      "headRefOid": "9741fdcf06dd866b0856bf695d8fc8e968161e7d",
+      "closedAt": "2023-10-19T00:52:25Z",
+      "mergedAt": "2023-10-19T00:52:25Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "58d721aa626cb27ef0fd1910391a963c1d99a264"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5khXIE",
+          "commit": {
+            "abbreviatedOid": "17f4cb4"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T00:52:04Z",
+          "updatedAt": "2023-10-19T00:52:09Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n- modulus_len, the length in bytes of the RSA modulus n. This MUST be a power of 2.\r\n```",
+              "createdAt": "2023-10-19T00:52:04Z",
+              "updatedAt": "2023-10-19T00:52:09Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "PR_kwDOJAmlvM5dNTUF",
+      "title": "Update to FIPS 186-5",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/36",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "FIPS 186-4 will soon be withdrawn, so we should refer to 186-5.\n\nAdditionally, we should be more precise with our reference to 'standard' RSA-PSS libraries, as SYMCRYPT doesn't support exponents larger than 64 bits:\nhttps://github.com/microsoft/SymCrypt/blob/b4f07a34bdb970e8690dc13a98fb9fb77edc0f50/inc/symcrypt.h#L6705",
+      "createdAt": "2023-10-19T00:59:57Z",
+      "updatedAt": "2023-10-19T20:30:53Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "58d721aa626cb27ef0fd1910391a963c1d99a264",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits3",
+      "headRefOid": "c12c77c5d9ad7de0267bff859de0484ebe56b651",
+      "closedAt": "2023-10-19T01:03:37Z",
+      "mergedAt": "2023-10-19T01:03:37Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "2499172834ad7db5e91e97ab888c8e35a8e92d03"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5khYrr",
+          "commit": {
+            "abbreviatedOid": "c12c77c"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T01:03:22Z",
+          "updatedAt": "2023-10-19T01:03:22Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "id": "PR_kwDOJAmlvM5dNUY1",
+      "title": "Take mod n of z during computation",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/37",
+      "state": "CLOSED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This may make the implementation of `z * inv mod n` on the next line less error prone.",
+      "createdAt": "2023-10-19T01:06:19Z",
+      "updatedAt": "2023-10-19T20:32:58Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "2499172834ad7db5e91e97ab888c8e35a8e92d03",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits4",
+      "headRefOid": "7d4ca13564368df6738c62e983ef68be19324b52",
+      "closedAt": "2023-10-19T20:32:57Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "I'm not really sure I understand this change. In what way is the following line (`z * inv`) error prone?",
+          "createdAt": "2023-10-19T01:12:25Z",
+          "updatedAt": "2023-10-19T01:12:25Z"
+        },
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The added implementation complexities aren't entirely clear here, so we will drop this PR",
+          "createdAt": "2023-10-19T20:32:57Z",
+          "updatedAt": "2023-10-19T20:32:57Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 38,
+      "id": "PR_kwDOJAmlvM5dNVck",
+      "title": "Reference HKDF",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/38",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Where used",
+      "createdAt": "2023-10-19T01:12:35Z",
+      "updatedAt": "2023-10-19T20:30:57Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "2499172834ad7db5e91e97ab888c8e35a8e92d03",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits5",
+      "headRefOid": "a5f3e0bbc0ea25eec29a2ab1e548020ac0f8d23c",
+      "closedAt": "2023-10-19T01:13:22Z",
+      "mergedAt": "2023-10-19T01:13:22Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "67701dd5d4c8af80550fda46b5e345ef1f1c5df4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5khaNP",
+          "commit": {
+            "abbreviatedOid": "a5f3e0b"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T01:13:01Z",
+          "updatedAt": "2023-10-19T01:13:01Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "PR_kwDOJAmlvM5dT2PX",
+      "title": "Remove incorrect FIPS reference",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/39",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "FIPS 186-4 doesn't use strong primes, and shouldn't be linked here. This appears to be copied from the Blind RSA draft where it is a correct reference.",
+      "createdAt": "2023-10-19T19:33:00Z",
+      "updatedAt": "2023-10-19T20:31:01Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "4a49698d46720d18612aa081e344dddfd1461cf3",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits6",
+      "headRefOid": "8e3868162d98b094b6954678bca5ef62231463a8",
+      "closedAt": "2023-10-19T19:56:42Z",
+      "mergedAt": "2023-10-19T19:56:42Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "ae6690753127b0e5606ea1d738d7dbfb80b9098b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5kpRNS",
+          "commit": {
+            "abbreviatedOid": "0f8f552"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T19:55:20Z",
+          "updatedAt": "2023-10-19T19:55:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "id": "PR_kwDOJAmlvM5dT7Ji",
+      "title": "Appendix nits and renaming",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/40",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-19T19:49:54Z",
+      "updatedAt": "2023-10-19T20:31:02Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "67701dd5d4c8af80550fda46b5e345ef1f1c5df4",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "shendrickedits7",
+      "headRefOid": "a148ada83c6b326f86b853db7d013666a58b1c28",
+      "closedAt": "2023-10-19T19:54:36Z",
+      "mergedAt": "2023-10-19T19:54:36Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "4a49698d46720d18612aa081e344dddfd1461cf3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5kpQ7M",
+          "commit": {
+            "abbreviatedOid": "a148ada"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-19T19:54:31Z",
+          "updatedAt": "2023-10-19T19:54:31Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "PR_kwDOJAmlvM5dkmLQ",
+      "title": "Adding more information regarding is_prime and random_prime.",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/41",
+      "state": "OPEN",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-23T20:09:24Z",
+      "updatedAt": "2023-10-27T22:43:34Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "c9deec8ecb71320586940250cc91da3e0263b5ea",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "probable-prime",
+      "headRefOid": "974689d6f2f97afc3f962445c71c46b6718fd3ba",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "Why is this change needed?",
+          "createdAt": "2023-10-24T21:57:46Z",
+          "updatedAt": "2023-10-24T21:57:46Z"
+        },
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Latest FIPS specification makes a distinction between provable and probable primes. This change reinforces that we are fine with probable primes. No strong opinion from my end. We can close with comment if you think it is not needed in the context of this draft.",
+          "createdAt": "2023-10-24T22:01:41Z",
+          "updatedAt": "2023-10-24T22:01:41Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "> Latest FIPS specification makes a distinction between provable and probable primes. This change reinforces that we are fine with probable primes. No strong opinion from my end. We can close with comment if you think it is not needed in the context of this draft.\r\n\r\nI would prefer a slightly different approach. Namely, I would add some more context about what happens if these functions fail (return composite instead of prime numbers, for example). We can then point to that context when needed, e.g.:\r\n\r\n```\r\n- random_prime(b): Return a random prime number of length b bits. See {{prime-context}} for more information about this function.\r\n\r\n<snip>\r\n<appendix>\r\n\r\n# Primes and Primality Tests {#prime-context}\r\n\r\nThe functions random_prime and is_prime likely use probabilistic primality tests internally. As a result, it is possible for these functions to return incorrect values. The consequence of an incorrect value is TODO.\r\n```",
+          "createdAt": "2023-10-26T18:57:10Z",
+          "updatedAt": "2023-10-26T18:57:30Z"
+        },
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Made some changes.",
+          "createdAt": "2023-10-27T22:43:34Z",
+          "updatedAt": "2023-10-27T22:43:34Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOJAmlvM5drFou",
+      "title": "Adding recommended key size and upper limit",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/42",
+      "state": "OPEN",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-24T18:50:55Z",
+      "updatedAt": "2023-10-24T22:02:25Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "c9deec8ecb71320586940250cc91da3e0263b5ea",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "key-size-upper-bound",
+      "headRefOid": "fd17c032ec0a76332b4f87d150ba615f6ac550d3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "@Guss123 why do we need this change?",
+          "createdAt": "2023-10-24T19:53:18Z",
+          "updatedAt": "2023-10-24T19:53:18Z"
+        },
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This change (along with other PRs Scott has been sending) are about incorporating some feedback we got recently from some reviewers who reviewed both the draft and the technical paper.",
+          "createdAt": "2023-10-24T20:51:00Z",
+          "updatedAt": "2023-10-24T20:51:00Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "I get that, but why do we need to make this change? The blind RSA RFC has no such recommendation, for example.",
+          "createdAt": "2023-10-24T21:58:32Z",
+          "updatedAt": "2023-10-24T21:58:32Z"
+        },
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We can close this PR if you think it is not needed in the context of this draft. I am okay with that!",
+          "createdAt": "2023-10-24T22:02:24Z",
+          "updatedAt": "2023-10-24T22:02:24Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 43,
+      "id": "PR_kwDOJAmlvM5dr7CJ",
+      "title": "Lower bound on the value of SafePrime(bits) for Protocol Correctness.",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/43",
+      "state": "CLOSED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Comments on efficiency of SafePrime(bits) added as well.",
+      "createdAt": "2023-10-24T21:39:14Z",
+      "updatedAt": "2023-10-24T21:51:16Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "c9deec8ecb71320586940250cc91da3e0263b5ea",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "safeprime-lower-bound",
+      "headRefOid": "19c16d6842390296ab5dbc9e5992fd8ba721bfbf",
+      "closedAt": "2023-10-24T21:42:01Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 44,
+      "id": "PR_kwDOJAmlvM5dr_4i",
+      "title": "For protocol correctness, making sure SafePrimes output value of corr\u2026",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/44",
+      "state": "OPEN",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026ect size, + other speedup related comments",
+      "createdAt": "2023-10-24T21:55:07Z",
+      "updatedAt": "2023-10-24T22:14:04Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "c9deec8ecb71320586940250cc91da3e0263b5ea",
+      "headRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "gamjad/safeprimes",
+      "headRefOid": "bdaa019d0545a2439166546cfe828869b65b5308",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5lFkNj",
+          "commit": {
+            "abbreviatedOid": "5d19b6a"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-10-24T21:59:29Z",
+          "updatedAt": "2023-10-24T21:59:32Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "Would it make more sense to run is_prime only if the lower bound on p is satisfied?",
+              "createdAt": "2023-10-24T21:59:29Z",
+              "updatedAt": "2023-10-24T21:59:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5lFomC",
+          "commit": {
+            "abbreviatedOid": "5d19b6a"
+          },
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-24T22:14:04Z",
+          "updatedAt": "2023-10-24T22:14:04Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "I misread what you wanted. But the second commit also solves the same issue, if you are okay with this structure.",
+              "createdAt": "2023-10-24T22:14:04Z",
+              "updatedAt": "2023-10-24T22:21:20Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "PR_kwDOJAmlvM5d0GYC",
+      "title": "fixing typo in test vector variant name",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/45",
+      "state": "MERGED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "No random 32-byte prefix is provided, nor used.\r\n",
+      "createdAt": "2023-10-26T01:17:13Z",
+      "updatedAt": "2023-10-26T19:37:07Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "c9deec8ecb71320586940250cc91da3e0263b5ea",
+      "headRepository": "Guss123/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "gamjad/appendixB",
+      "headRefOid": "85b1acfaf8e6c42d3b2a9c559e487d5090656511",
+      "closedAt": "2023-10-26T18:51:39Z",
+      "mergedAt": "2023-10-26T18:51:39Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "bd4af34ac3fd1137f0f082a0b3c19ab403001cb8"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5lWjvz",
+          "commit": {
+            "abbreviatedOid": "85b1acf"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-26T18:51:35Z",
+          "updatedAt": "2023-10-26T18:51:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDOJAmlvM5d6FP6",
+      "title": "Correcting a section number listed for standard RSA blind signature doc",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/46",
+      "state": "MERGED",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also moving the reference to normative as it is used explicitly in some parts of the draft (e.g. message preparation , security consideration etc.)",
+      "createdAt": "2023-10-26T20:00:19Z",
+      "updatedAt": "2023-10-27T12:45:12Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "bd4af34ac3fd1137f0f082a0b3c19ab403001cb8",
+      "headRepository": "Guss123/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "gamjad/standardRSABSSAReferences",
+      "headRefOid": "fe0d2bbc675476fa0521499d49847991b25468d0",
+      "closedAt": "2023-10-27T12:45:12Z",
+      "mergedAt": "2023-10-27T12:45:12Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "0aad2109825c8c45422fbefbe7628e8b0517c227"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5lbfy7",
+          "commit": {
+            "abbreviatedOid": "11ad290"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-27T12:44:06Z",
+          "updatedAt": "2023-10-27T12:44:06Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJAmlvM5lbf7Z",
+          "commit": {
+            "abbreviatedOid": "11ad290"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-27T12:44:26Z",
+          "updatedAt": "2023-10-27T12:44:26Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "```suggestion\r\nAll the security considerations of RSABSSA in {{Section 7 of RSABSSA}}\r\n```",
+              "createdAt": "2023-10-27T12:44:26Z",
+              "updatedAt": "2023-10-27T12:44:26Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "id": "PR_kwDOJAmlvM5d6Zza",
+      "title": "DOS Attacks as explained currently, are not possible for RSAPBSSA",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/47",
+      "state": "OPEN",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Making the section on DOS attacks more accurate and nuanced.",
+      "createdAt": "2023-10-26T21:14:01Z",
+      "updatedAt": "2023-10-27T21:49:24Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "bd4af34ac3fd1137f0f082a0b3c19ab403001cb8",
+      "headRepository": "Guss123/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "gamjad/dos",
+      "headRefOid": "5f27b327dcbf69c882b0f0e8bba610eba43f77ed",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "Guss123",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\"as previously stated, the attacker can choose the metadata and therefore choose the length of the public exponent\" \r\n\r\nI dont see that in this section. IF the attacker is able to choose the length of the public exponent only then it can launch DOS attack with bigger and bigger public exponents. However in our protocol, the we fix public exponent length (as we fix the HKDF output length) so whatever public metadata the attacker picks, the output size of public exponent is alway the same.",
+          "createdAt": "2023-10-27T21:49:24Z",
+          "updatedAt": "2023-10-27T21:49:24Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5lbhcm",
+          "commit": {
+            "abbreviatedOid": "5f27b32"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "The existing text seems correct and is more concise. The new text is longer and seems incorrect. In particular, \"Fortunately, RSAPBSSA does not provide the flexibility of picking the length of the derived public exponent and thus we avoid this situation\" is wrong since, as previously stated, the attacker can choose the metadata and therefore choose the length of the public exponent. ",
+          "createdAt": "2023-10-27T12:47:47Z",
+          "updatedAt": "2023-10-27T12:47:47Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDOJAmlvM5eArXm",
+      "title": "Note on side channel attacks",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/48",
+      "state": "OPEN",
+      "author": "Guss123",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adding explicit reference to side channel section of the original RSABSSA document and commenting on the fact the the public exponent inversion modulo private key material has a potential for side channel attack. Adding a potential defense as well in the form of a constant time GCD algorithm.",
+      "createdAt": "2023-10-27T21:45:17Z",
+      "updatedAt": "2023-10-27T21:45:18Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "0aad2109825c8c45422fbefbe7628e8b0517c227",
+      "headRepository": "Guss123/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "gamjad/sidechannel",
+      "headRefOid": "2426d0db29df7bef6032421e9068f0941499db2b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOJAmlvM5nKtKk",
+      "title": "Fix DerivePublicKey definition, and improve test vector consistency",
+      "url": "https://github.com/chris-wood/draft-amjad-cfrg-partially-blind-rsa/pull/49",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Mostly minor tweaks:\r\n* slice in DerivePublicKey did not match it's definition. This change adds a start\r\n* DerievePublicKey only needs n, remove e, which is not passed to DeriveKeyPair for instance\r\n* update test vector to match the name they present in the draft\r\n* add a definition for string when used as byte string. Otherwise concat is hard to read",
+      "createdAt": "2024-02-17T13:31:35Z",
+      "updatedAt": "2024-03-06T14:49:01Z",
+      "baseRepository": "chris-wood/draft-amjad-cfrg-partially-blind-rsa",
+      "baseRefName": "main",
+      "baseRefOid": "e7ed416051fea3f1f5306f5612eac242e1ee8fe7",
+      "headRepository": "thibmeu/draft-amjad-cfrg-partially-blind-rsa",
+      "headRefName": "main",
+      "headRefOid": "cb45978d858ca662cfc8e70a52589f02558fe59a",
+      "closedAt": "2024-03-06T14:49:00Z",
+      "mergedAt": "2024-03-06T14:49:00Z",
+      "mergedBy": "kwlyeo",
+      "mergeCommit": {
+        "oid": "86c5aaf89c6f4816b869123a065f71d1b8efe3d2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJAmlvM5ycEcj",
+          "commit": {
+            "abbreviatedOid": "cb45978"
+          },
+          "author": "kwlyeo",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-03-06T14:47:55Z",
+          "updatedAt": "2024-03-06T14:47:55Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
